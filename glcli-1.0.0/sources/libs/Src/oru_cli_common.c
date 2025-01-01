@@ -1605,7 +1605,7 @@ void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t* msg) {
     cli = cli;
     msg = msg;
 
-    oru_iface_show_interface_resp_t *resp = (oru_iface_show_interface_resp_t *)&msg->body.param_value[0];
+    oru_iface_show_interface_req_t *resp = (oru_iface_show_interface_req_t *)&msg->body.param_value[0];
     printf("Interface name: %s\n", resp->ifacename);
 
     char output[MAX_CMD_OUTPUT_LEN];
