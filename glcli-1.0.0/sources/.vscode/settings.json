@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "pc805_base_func.h": "c",
+        "rfic_cmd_handler.h": "c",
+        "rfic_console.h": "c",
+        "tiafe77d_afelibglobals.h": "c",
+        "rfic_msg.h": "c",
+        "rfic_req_handler.h": "c",
+        "rfic_resp_handler.h": "c",
+        "stdint.h": "c",
+        "tiafe77d_afeglobalconstants.h": "c",
+        "tiafe77d_tx.h": "c"
+    }
+}

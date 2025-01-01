@@ -1,0 +1,389 @@
+Already up to date.
+[1;34mClearing O-RU M-PLANE build files and directories...[0m
+[1;32mCleared O-RU M-PLANE build files and directories.[0m
+[1;34mBuilding the O-RU RFIC...[0m
+Login Succeeded
++ export PICOOS_BASE=/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/common/PicoOS
++ PICOOS_BASE=/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/common/PicoOS
++ bash project_start.sh build
+>Building...
+Build package: start
+/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0
+./generate_version.sh
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_agc.o -c ./Afe77xxD/Src/tiAfe77D_agc.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_agcParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_agcParamsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_basicFunctions.o -c ./Afe77xxD/Src/tiAfe77D_basicFunctions.c
++++ dirname ./generate_version.sh
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_calibrations.o -c ./Afe77xxD/Src/tiAfe77D_calibrations.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_controls.o -c ./Afe77xxD/Src/tiAfe77D_controls.c
+++ cd .
+++ pwd
++ ROOT_PATH=/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_dpdCfr.o -c ./Afe77xxD/Src/tiAfe77D_dpdCfr.c
++ cd /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE/Afe77xxDUser/Include/
++ touch version.h
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_dpdParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_dpdParamsSetterGetter.c
++ echo -e '#pragma once\n '
+++ git rev-parse HEAD
+fatal: not a git repository (or any parent up to mount point /home/user/projects/branches/master/pc805-mplane/sources)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
++ RFIC_COMMIT=
++ echo const 'char*' gCommit = '{""};'
+++ git rev-parse --abbrev-ref HEAD
+fatal: not a git repository (or any parent up to mount point /home/user/projects/branches/master/pc805-mplane/sources)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
++ RFIC_BRANCH=
++ echo const 'char*' gBranch = '{""};'
+++ date '+%Y-%m-%d %H:%M:%S'
++ BUILD_TIME='2024-12-17 23:28:19'
++ echo const 'char*' gBuildTime = '{"2024-12-17' '23:28:19"};'
+++ jq .version.releaseNum /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE/../../manifest.json
++ RELEASE_NUM=1
+++ jq .version.maintainNum /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE/../../manifest.json
++ MAINTAIN_NUM=0
+++ jq .version.hotfixNum /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE/../../manifest.json
++ HOTFIX_NUM=0
++ echo const 'char*' gVersion = '{"1.0.0"};'
++ cd -
+/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/AFECLibs/CAFE
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_fb.o -c ./Afe77xxD/Src/tiAfe77D_fb.c
+[01m[K./Afe77xxD/Src/tiAfe77D_calibrations.c:[m[K In function '[01m[Kti_afe77D_setNormBandConfigForDpdOutEqualizerCoeffEstimation[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_calibrations.c:1241:33:[m[K [01;35m[Kwarning: [m[Kiteration 1 invokes undefined behavior [[01;35m[K-Waggressive-loop-optimizations[m[K]
+ 1241 |         [01;35m[KbyteList[numOfOperands] = (freqPts >> 8) & 0xff[m[K;
+      |         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_calibrations.c:1236:23:[m[K [01;36m[Knote: [m[Kwithin this loop
+ 1236 |     for (idx = 0; [01;36m[Kidx < 2[m[K; idx++)
+      |                   [01;36m[K~~~~^~~[m[K
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_genLibFunc.o -c ./Afe77xxD/Src/tiAfe77D_genLibFunc.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_init.o -c ./Afe77xxD/Src/tiAfe77D_init.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_jesd.o -c ./Afe77xxD/Src/tiAfe77D_jesd.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_macro.o -c ./Afe77xxD/Src/tiAfe77D_macro.c
+[01m[K./Afe77xxD/Src/tiAfe77D_macro.c:[m[K In function '[01m[Kti_afe77D_downloadAndApplyTopPatch[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_macro.c:448:9:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kfgets[m[K' declared with attribute '[01m[Kwarn_unused_result[m[K' [[01;35m[K-Wunused-result[m[K]
+  448 |         [01;35m[Kfgets(strLine, 256, fp)[m[K;
+      |         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:[m[K In function '[01m[Kti_afe77D_afeDeviceBringup[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:130:9:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kfgets[m[K' declared with attribute '[01m[Kwarn_unused_result[m[K' [[01;35m[K-Wunused-result[m[K]
+  130 |         [01;35m[Kfgets(strLine, 256, fp)[m[K;
+      |         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:[m[K In function '[01m[Kti_afe77D_parseSystemParams[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:585:9:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kfgets[m[K' declared with attribute '[01m[Kwarn_unused_result[m[K' [[01;35m[K-Wunused-result[m[K]
+  585 |         [01;35m[Kfgets(strLine, 256, fp)[m[K;
+      |         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:[m[K In function '[01m[Kti_afe77D_runSingleStepFromHex[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_init.c:765:9:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kfgets[m[K' declared with attribute '[01m[Kwarn_unused_result[m[K' [[01;35m[K-Wunused-result[m[K]
+  765 |         [01;35m[Kfgets(strLine, 256, fp)[m[K;
+      |         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_pap.o -c ./Afe77xxD/Src/tiAfe77D_pap.c
+[01m[K./Afe77xxD/Src/tiAfe77D_calibrations.c:1241:17:[m[K [01;35m[Kwarning: [m[Karray subscript 8 is above array bounds of '[01m[Kuint8_t[8][m[K' {aka '[01m[Kunsigned char[8][m[K'} [[01;35m[K-Warray-bounds[m[K]
+ 1241 |         [01;35m[KbyteList[numOfOperands][m[K = (freqPts >> 8) & 0xff;
+      |         [01;35m[K~~~~~~~~^~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_calibrations.c:1221:13:[m[K [01;36m[Knote: [m[Kwhile referencing '[01m[KbyteList[m[K'
+ 1221 |     uint8_t [01;36m[KbyteList[m[K[8];
+      |             [01;36m[K^~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_pap.c:[m[K In function '[01m[Kti_afe77D_papPeakPwrDetectorTrigSetConfig[m[K':
+[01m[K./Afe77xxD/Src/tiAfe77D_pap.c:564:13:[m[K [01;35m[Kwarning: [m[Karray subscript 7 is above array bounds of '[01m[Kuint8_t[7][m[K' {aka '[01m[Kunsigned char[7][m[K'} [[01;35m[K-Warray-bounds[m[K]
+  564 |     [01;35m[KbyteList[numOfOperands][m[K = (peakPwrTrigSetWindowCntrTh >> 8) & 0xff;
+      |     [01;35m[K~~~~~~~~^~~~~~~~~~~~~~~[m[K
+[01m[K./Afe77xxD/Src/tiAfe77D_pap.c:547:13:[m[K [01;36m[Knote: [m[Kwhile referencing '[01m[KbyteList[m[K'
+  547 |     uint8_t [01;36m[KbyteList[m[K[7];
+      |             [01;36m[K^~~~~~~~[m[K
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_papParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_papParamsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_paramsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_paramsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_rx.o -c ./Afe77xxD/Src/tiAfe77D_rx.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_serDes.o -c ./Afe77xxD/Src/tiAfe77D_serDes.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_tx.o -c ./Afe77xxD/Src/tiAfe77D_tx.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_vswr.o -c ./Afe77xxD/Src/tiAfe77D_vswr.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_wrapper_agcParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_wrapper_agcParamsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_wrapper_dpdParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_wrapper_dpdParamsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_wrapper_papParamsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_wrapper_papParamsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_wrapper_paramsSetterGetter.o -c ./Afe77xxD/Src/tiAfe77D_wrapper_paramsSetterGetter.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/initdata.o -c ./Afe77xxDUser/Src/initdata.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/pc802_oamapi_codec.o -c ./Afe77xxDUser/Src/pc802_oamapi_codec.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/pc802_pcie.o -c ./Afe77xxDUser/Src/pc802_pcie.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/pc802_spi.o -c ./Afe77xxDUser/Src/pc802_spi.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/pc805_base_func.o -c ./Afe77xxDUser/Src/pc805_base_func.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/pc805_spi.o -c ./Afe77xxDUser/Src/pc805_spi.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_client.o -c ./Afe77xxDUser/Src/rfic_client.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_cmd_handler.o -c ./Afe77xxDUser/Src/rfic_cmd_handler.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_common_header.o -c ./Afe77xxDUser/Src/rfic_common_header.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_config.o -c ./Afe77xxDUser/Src/rfic_config.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_console.o -c ./Afe77xxDUser/Src/rfic_console.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_req_handler.o -c ./Afe77xxDUser/Src/rfic_req_handler.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_resp_handler.o -c ./Afe77xxDUser/Src/rfic_resp_handler.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/rfic_server.o -c ./Afe77xxDUser/Src/rfic_server.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_afeParameters1.o -c ./Afe77xxDUser/Src/tiAfe77D_afeParameters1.c
+[01m[K./Afe77xxDUser/Src/rfic_server.c:[m[K In function '[01m[Khandle_sigint[m[K':
+[01m[K./Afe77xxDUser/Src/rfic_server.c:41:31:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Ksig[m[K' [[01;35m[K-Wunused-parameter[m[K]
+   41 | static void handle_sigint([01;35m[Kint sig[m[K) {
+      |                           [01;35m[K~~~~^~~[m[K
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_afeParameters2.o -c ./Afe77xxDUser/Src/tiAfe77D_afeParameters2.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/tiAfe77D_baseFunc.o -c ./Afe77xxDUser/Src/tiAfe77D_baseFunc.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/server.o -c server.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP -D'TI_AFE77XXD_FUNC_NAME_PREFIX(funcName)=(ti_afe77D_##funcName)' -I./Afe77xxD/Include -I./Afe77xxDUser/Include -o Obj/client.o -c client.c
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -o AFE7769D_Driver_server Obj/tiAfe77D_agc.o Obj/tiAfe77D_agcParamsSetterGetter.o Obj/tiAfe77D_basicFunctions.o Obj/tiAfe77D_calibrations.o Obj/tiAfe77D_controls.o Obj/tiAfe77D_dpdCfr.o Obj/tiAfe77D_dpdParamsSetterGetter.o Obj/tiAfe77D_fb.o Obj/tiAfe77D_genLibFunc.o Obj/tiAfe77D_init.o Obj/tiAfe77D_jesd.o Obj/tiAfe77D_macro.o Obj/tiAfe77D_pap.o Obj/tiAfe77D_papParamsSetterGetter.o Obj/tiAfe77D_paramsSetterGetter.o Obj/tiAfe77D_rx.o Obj/tiAfe77D_serDes.o Obj/tiAfe77D_tx.o Obj/tiAfe77D_vswr.o Obj/tiAfe77D_wrapper_agcParamsSetterGetter.o Obj/tiAfe77D_wrapper_dpdParamsSetterGetter.o Obj/tiAfe77D_wrapper_papParamsSetterGetter.o Obj/tiAfe77D_wrapper_paramsSetterGetter.o Obj/initdata.o Obj/pc802_oamapi_codec.o Obj/pc802_pcie.o Obj/pc802_spi.o Obj/pc805_base_func.o Obj/pc805_spi.o Obj/rfic_client.o Obj/rfic_cmd_handler.o Obj/rfic_common_header.o Obj/rfic_config.o Obj/rfic_console.o Obj/rfic_req_handler.o Obj/rfic_resp_handler.o Obj/rfic_server.o Obj/tiAfe77D_afeParameters1.o Obj/tiAfe77D_afeParameters2.o Obj/tiAfe77D_baseFunc.o Obj/server.o -lm 
+riscv32-poky-linux-gcc    -fstack-protector-strong  -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --sysroot=/opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux -std=gnu99 -o AFE7769D_Driver_client Obj/tiAfe77D_agc.o Obj/tiAfe77D_agcParamsSetterGetter.o Obj/tiAfe77D_basicFunctions.o Obj/tiAfe77D_calibrations.o Obj/tiAfe77D_controls.o Obj/tiAfe77D_dpdCfr.o Obj/tiAfe77D_dpdParamsSetterGetter.o Obj/tiAfe77D_fb.o Obj/tiAfe77D_genLibFunc.o Obj/tiAfe77D_init.o Obj/tiAfe77D_jesd.o Obj/tiAfe77D_macro.o Obj/tiAfe77D_pap.o Obj/tiAfe77D_papParamsSetterGetter.o Obj/tiAfe77D_paramsSetterGetter.o Obj/tiAfe77D_rx.o Obj/tiAfe77D_serDes.o Obj/tiAfe77D_tx.o Obj/tiAfe77D_vswr.o Obj/tiAfe77D_wrapper_agcParamsSetterGetter.o Obj/tiAfe77D_wrapper_dpdParamsSetterGetter.o Obj/tiAfe77D_wrapper_papParamsSetterGetter.o Obj/tiAfe77D_wrapper_paramsSetterGetter.o Obj/initdata.o Obj/pc802_oamapi_codec.o Obj/pc802_pcie.o Obj/pc802_spi.o Obj/pc805_base_func.o Obj/pc805_spi.o Obj/rfic_client.o Obj/rfic_cmd_handler.o Obj/rfic_common_header.o Obj/rfic_config.o Obj/rfic_console.o Obj/rfic_req_handler.o Obj/rfic_resp_handler.o Obj/rfic_server.o Obj/tiAfe77D_afeParameters1.o Obj/tiAfe77D_afeParameters2.o Obj/tiAfe77D_baseFunc.o Obj/client.o -lm 
+'AFE7769D_Driver_server' -> '/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/output/AFE7769D_Driver_server'
+'AFE7769D_Driver_client' -> '/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/output/AFE7769D_Driver_client'
+/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0
+Build package: finished.
+Deleted Containers:
+cc2b31a45bc362ea01ddcef3794853d6fa60b8c2a3ab2a247799a2665732a6a4
+
+Total reclaimed space: 329kB
+[1;34mBuilding the O-RU M-PLANE project...[0m
+Login Succeeded
++ export PICOOS_BASE=/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/common/PicoOS
++ PICOOS_BASE=/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/common/PicoOS
++ ./build.sh 805 netconf
+Performing build 805
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/x86_64-pokysdk-linux/usr/bin/riscv32-poky-linux/riscv32-poky-linux-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/x86_64-pokysdk-linux/usr/bin/riscv32-poky-linux/riscv32-poky-linux-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+[0mUtils Src /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/command_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/file_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/gpio_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/i2c_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/interface.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/led_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/link_list.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/log.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/mortem_lib.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/oam_config_parser.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/oru_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/string_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/time_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/version.c[0m
+[0mUtils Src /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/command_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/file_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/gpio_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/i2c_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/interface.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/led_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/link_list.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/log.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/mortem_lib.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/oam_config_parser.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/oru_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/string_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/time_utils.c;/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/local/service/utils/version.c[0m
+[33mCMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+  The package name passed to `find_package_handle_standard_args` (LibSSH2)
+  does not match the name of the calling package (libssh2).  This can lead to
+  problems in calling code that expects `find_package` result variables
+  (e.g., `_FOUND`) to follow a certain pattern.
+Call Stack (most recent call first):
+  /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/CMakeModules/Findlibssh2.cmake:33 (find_package_handle_standard_args)
+  /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/netconf_server.cmake:9 (find_package)
+  CMakeLists.txt:194 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+[0m
+-- Found LibSSH2: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/include  
+-- Found Sysrepo: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib/libsysrepo.so (found version "7.8.10") 
+-- Found LibYANG: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib/libyang.so (found version "2.22.4") 
+-- Found CURL: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib/libcurl.so (found version "7.82.0")  
+-- Found OpenSSL: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib/libcrypto.so (found version "3.0.11")  
+-- Found MXML library: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib/libmxml.so
+-- MXML libary path: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/lib
+-- Found MXML header files in: /opt/picocom/tools/pc805_common/sdk/4.0.13/sysroots/riscv32-poky-linux/usr/include
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/build_netconf
+[  3%] [32mBuilding C object CMakeFiles/oam_manager.dir/top/data_storage.c.o[0m
+[  3%] [32mBuilding C object CMakeFiles/oam_manager.dir/internal_message/internal_message_handler.c.o[0m
+[  3%] [32mBuilding C object CMakeFiles/oam_manager.dir/internal_message/internal_pipe.c.o[0m
+[  4%] [32mBuilding C object CMakeFiles/oam_manager.dir/top/main.c.o[0m
+[  5%] [32mBuilding C object CMakeFiles/oam_manager.dir/top/main_thread.c.o[0m
+[  6%] [32mBuilding C object CMakeFiles/oam_manager.dir/top/receive_thread.c.o[0m
+[  8%] [32mBuilding C object CMakeFiles/oam_manager.dir/top/response_router.c.o[0m
+[  9%] [32mBuilding C object CMakeFiles/oam_manager.dir/local_mplane/local_mplane.c.o[0m
+[ 10%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/command_utils.c.o[0m
+[ 11%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/file_utils.c.o[0m
+[ 12%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/gpio_utils.c.o[0m
+[ 13%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/i2c_utils.c.o[0m
+[ 15%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/interface.c.o[0m
+[ 16%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/led_utils.c.o[0m
+[ 17%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/link_list.c.o[0m
+[ 18%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/log.c.o[0m
+[ 19%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/mortem_lib.c.o[0m
+[ 20%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/oam_config_parser.c.o[0m
+[ 22%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/oru_utils.c.o[0m
+[ 23%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/string_utils.c.o[0m
+[ 24%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/time_utils.c.o[0m
+[ 25%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/utils/version.c.o[0m
+[ 26%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/api_message_parser/api_message_printer.c.o[0m
+[ 27%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/api_message_parser/api_message_table.c.o[0m
+[ 29%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/api_message_parser/json_key_node.c.o[0m
+[ 30%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/config_mgmt.c.o[0m
+[ 31%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/delay_mgmt.c.o[0m
+[ 32%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/fault_mgmt.c.o[0m
+[ 33%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/file_mgmt.c.o[0m
+[ 34%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/interface_mgmt.c.o[0m
+[ 36%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/local_mplane.c.o[0m
+[ 37%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/log_mgmt.c.o[0m
+[ 38%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/mplane_interface.c.o[0m
+[ 39%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/netconf.c.o[0m
+[ 40%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/operations.c.o[0m
+[ 41%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/perf_mgmt.c.o[0m
+[ 43%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/prach_config.c.o[0m
+[ 44%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/processing_element.c.o[0m
+[ 45%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/supervision.c.o[0m
+[ 46%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/sw_mgmt.c.o[0m
+[ 47%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/sync_mgmt.c.o[0m
+[ 48%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/sysrepo_log.c.o[0m
+[ 50%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/trace_mgmt.c.o[0m
+[ 51%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/transceiver_config.c.o[0m
+[ 52%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/u_plane_config.c.o[0m
+[ 53%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/oam_netconf/user_mgmt.c.o[0m
+[ 54%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/cache.c.o[0m
+[ 55%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/file_transfer.c.o[0m
+[ 56%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/ftpes_transfer.c.o[0m
+[ 58%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/log_forwarder_manager.c.o[0m
+[ 59%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/oru_system.c.o[0m
+[ 60%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/sftp_transfer.c.o[0m
+[ 61%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/common/xml_parser.c.o[0m
+[ 62%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/devices/ina226.c.o[0m
+[ 63%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/devices/lm75.c.o[0m
+[ 65%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/devices/pc805.c.o[0m
+[ 66%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/devices/lpddr4.c.o[0m
+[ 67%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/devices/sa56004ed.c.o[0m
+[ 68%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/pc802r_scb/pc802r_scb_init.c.o[0m
+[ 69%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/pc802r_scb/pc802r_transceiver_module_info.c.o[0m
+[ 70%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/pc805_rdb/pc805_rdb_init.c.o[0m
+[ 72%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/pc805_rdb/pc805_transceiver_module_info.c.o[0m
+[ 73%] [32mBuilding C object CMakeFiles/oam_manager.dir/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/netconf_server/src/platform/platform.c.o[0m
+[ 74%] [32mBuilding C object CMakeFiles/oam_manager.dir/service/local_socket/local_socket.c.o[0m
+[ 75%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/command_handler.c.o[0m
+[ 76%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/i2c_message_manager.c.o[0m
+[ 77%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/oru_fault.c.o[0m
+[ 79%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/oru_settings.c.o[0m
+[ 80%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/oru_state.c.o[0m
+[ 81%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/process_manager.c.o[0m
+[ 82%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/ptp4l_manager.c.o[0m
+[ 83%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/rfic_manager.c.o[0m
+[ 84%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/sfp_manager.c.o[0m
+[ 86%] [32mBuilding C object CMakeFiles/oam_manager.dir/components/sync_manager.c.o[0m
+[ 87%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/local_platform.c.o[0m
+[ 88%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/pc802r_cust_acc_x1/pc802r_cust_acc_x1.c.o[0m
+[ 89%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/pc802r_cust_iru_x1/pc802r_cust_iru_x1.c.o[0m
+[ 90%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/pc802r_scb/pc802r_scb.c.o[0m
+[ 91%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/pc805_rdb/pc805_rdb.c.o[0m
+[ 93%] [32mBuilding C object CMakeFiles/oam_manager.dir/platform/pc805_evb/pc805_evb.c.o[0m
+[ 94%] [32mBuilding C object CMakeFiles/oam_manager.dir/oam_api_message/measurement_counter_handler.c.o[0m
+[ 95%] [32mBuilding C object CMakeFiles/oam_manager.dir/oam_api_message/message_handler.c.o[0m
+[ 96%] [32mBuilding C object CMakeFiles/oam_manager.dir/oam_api_message/message_sender.c.o[0m
+[ 97%] [32mBuilding C object CMakeFiles/oam_manager.dir/third_party/cJSON/cJSON.c.o[0m
+[ 98%] [32mBuilding C object CMakeFiles/oam_manager.dir/third_party/ini/ini.c.o[0m
+[100%] [32m[1mLinking C executable bin/oam_manager[0m
+[100%] Built target oam_manager
+Use default board_type 11
+mkdir: created directory '/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/build_netconf/bin/usecases'
+Copy 805 usecases
+mkdir: created directory '/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/build_netconf/bin/netconf_server'
+Copy netconf server files
+Deleted Containers:
+03f1fb497e3d49c9596eb0863fad792ebf4cc79878111fdf17c304734cd381c2
+
+Total reclaimed space: 329kB
+[1;34mInstalling the O-RU M-PLANE project...[0m
+[1;32m Created necessary directories.[0m
+[1;32m Install configurations for the oru-7.0.0 [0m
+[1;32m Installing the O-RU M-PLANE default configuration(configs/default/):[0m
+'/home/user/projects/branches/master/pc805-mplane/configs/default/oru_oam/certificate/client_cert.pem' -> '/home/user/projects/branches/master/pc805-mplane/gl805_oru-7.0.0/mp_sw/oru_oam/netconf_server/scripts/certificate/client_cert.pem'
+'/home/user/projects/branches/master/pc805-mplane/configs/default/oru_oam/certificate/client_key.pem' -> '/home/user/projects/branches/master/pc805-mplane/gl805_oru-7.0.0/mp_sw/oru_oam/netconf_server/scripts/certificate/client_key.pem'
+'/home/user/projects/branches/master/pc805-mplane/configs/default/oru_oam/certificate/vsftpd_cert.pem' -> '/home/user/projects/branches/master/pc805-mplane/gl805_oru-7.0.0/mp_sw/oru_oam/netconf_server/scripts/certificate/vsftpd_cert.pem'
+[1;32m O-RU M-PLANE default configuration installed successfully.[0m
+/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0
+ Manifest_generator: Current directory: /home/user/projects/branches/master/pc805-mplane/packages/oru-7.0.0/supporting_sw/manifest_generator
+ Current directory: /home/user/projects/branches/master/pc805-mplane/gl805_oru-7.0.0
+[1;34m Package manifest has been created.[0m
+[1;34mO-RU M-PLANE package has been created.[0m
+bash: cannot set terminal process group (-1): Inappropriate ioctl for device
+bash: no job control in this shell
+From http://192.168.150.3:1101/System_team/pc805-mplane
+ * branch              master     -> FETCH_HEAD
++++ dirname ./docker_build.sh
+++ cd .
+++ pwd
++ LOCAL_DIR=/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0
+++ id -u
++ USER_ID=1000
+++ id -g
++ GROUP_ID=1000
++ '[' 1000 -eq 0 ']'
++ '[' -e .cmd.sh ']'
++ rm .cmd.sh
++ touch .cmd.sh
++ chmod +x .cmd.sh
++ cat
++ pc805_docker_image=docker.picocom.com/pcomware/oru_pc805_build:v4
++ docker login docker.picocom.com --username picocom --password picocom
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
++ docker_image=docker.picocom.com/pcomware/oru_pc805_build:v4
++ docker run -t --user root --entrypoint /bin/bash -v /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0:/home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0 docker.picocom.com/pcomware/oru_pc805_build:v4 -l -c 'groupadd -r -g 1000 docker_group && useradd -u 1000 docker_user -g 1000  &&      cd /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0 && su -c /home/user/projects/branches/master/pc805-mplane/sources/oru_rfic_afe7769d-7.0.0/.cmd.sh docker_user'
++ docker system prune -f
++++ dirname ./docker_build.sh
+++ cd .
+++ pwd
++ LOCAL_DIR=/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0
+++ id -u
++ USER_ID=1000
+++ id -g
++ GROUP_ID=1000
++ '[' 1000 -eq 0 ']'
++ '[' -e .cmd.sh ']'
++ touch .cmd.sh
++ chmod +x .cmd.sh
++ cat
++ pc802r_docker_image=docker.picocom.com/pcomware/oru_oam_pc802r_build:v1
++ pc805_docker_image=docker.picocom.com/pcomware/oru_pc805_build:v4
++ docker login docker.picocom.com --username picocom --password picocom
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /home/user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
++ [[ ./build.sh 805 netconf == *\8\0\2* ]]
++ [[ ./build.sh 805 netconf == *\8\0\5* ]]
++ docker_image=docker.picocom.com/pcomware/oru_pc805_build:v4
++ docker run -t --user root --entrypoint /bin/bash -v /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0:/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0 docker.picocom.com/pcomware/oru_pc805_build:v4 -l -c 'groupadd -r -g 1000 docker_group && useradd -u 1000 docker_user -g 1000  &&      cd /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0 && su -c /home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/.cmd.sh docker_user'
++ docker system prune -f
++++ dirname generate_version.sh
+++ cd .
+++ pwd
++ ROOT_PATH=/home/user/projects/branches/master/pc805-mplane/packages/oru-7.0.0/supporting_sw/version_generator
++ touch version
++ echo -e '@CopyRight GIGALANE.\n \nO-RU Version Information\n'
+++ git rev-parse HEAD
++ ORU_COMMIT=a38ce07cd7e792bddb1c0ccc7d80e861cfd2cba6
+++ git rev-parse --abbrev-ref HEAD
++ ORU_BRANCH=master
+++ date '+%Y-%m-%d %H:%M:%S'
++ BUILD_TIME='2024-12-18 08:28:39'
+++ jq -r .version.releaseNum /home/user/projects/branches/master/pc805-mplane/packages/oru-7.0.0/supporting_sw/version_generator/manifest.json
++ RELEASE_NUM=7
+++ jq -r .version.maintainNum /home/user/projects/branches/master/pc805-mplane/packages/oru-7.0.0/supporting_sw/version_generator/manifest.json
++ MAINTAIN_NUM=0
+++ jq -r .version.hotfixNum /home/user/projects/branches/master/pc805-mplane/packages/oru-7.0.0/supporting_sw/version_generator/manifest.json
++ HOTFIX_NUM=0
+++ git log -1 --pretty=format:%an
++ LAST_COMMITTER=lat1017
+++ git log -1 --pretty=format:%ae
++ LAST_COMMITTER_EMAIL=lat1017@gigalane.com
+++ git log -1 --pretty=format:%ad --date=short
++ LAST_COMMIT_DATE=2024-12-16
+++ git log --reverse --pretty=format:%an
+++ head -n 1
++ FIRST_AUTHOR=tuanla1710
+++ git log --reverse --pretty=format:%ae
+++ head -n 1
++ FIRST_AUTHOR_EMAIL=vn.tuanla.2020@gmail.com
+++ git log --reverse --pretty=format:%ad --date=short
+++ head -n 1
++ FIRST_COMMIT_DATE=2024-07-01
+++ uname -a
++ OS_INFO='Linux user 5.15.0-125-generic #135~20.04.1-Ubuntu SMP Mon Oct 7 13:56:22 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux'
+++ gcc --version
+++ head -n 1
++ COMPILER_VERSION='gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0'
++ echo 'Commit              = {"a38ce07cd7e792bddb1c0ccc7d80e861cfd2cba6"};'
++ echo 'Branch              = {"master"};'
++ echo 'BuildTime           = {"2024-12-18 08:28:39"};'
++ echo 'PicocomVersion      = {"7.0.0"};'
++ echo 'LastCommitter       = {"lat1017"};'
++ echo 'LastCommitterEmail  = {"lat1017@gigalane.com"};'
++ echo 'LastCommitDate      = {"2024-12-16"};'
++ echo 'FirstAuthor         = {"tuanla1710"};'
++ echo 'FirstAuthorEmail    = {"vn.tuanla.2020@gmail.com"};'
++ echo 'FirstCommitDate     = {"2024-07-01"};'
++ echo 'OSInfo              = {"Linux user 5.15.0-125-generic #135~20.04.1-Ubuntu SMP Mon Oct 7 13:56:22 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux"};'
++ echo 'CompilerVersion     = {"gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0"};'
++ cd -

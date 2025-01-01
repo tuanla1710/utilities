@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execute Command</title>
+</head>
+<body>
+    <h2>Execute Command</h2>
+    <form action="/command" method="post">
+        <label for="command">Command:</label>
+        <input type="text" id="command" name="command" required><br><br>
+        <button type="submit">Execute</button>
+    </form>
+    {% if output %}
+        <h3>Output:</h3>
+        <pre>{{ output }}</pre>
+    {% endif %}
+</body>
+</html>
+
