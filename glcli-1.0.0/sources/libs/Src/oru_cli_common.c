@@ -16,8 +16,44 @@
 #include <stdarg.h>
 #include <string.h>
 
+
+#include <inttypes.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <utmp.h>
+
+
 #include "oru_cli_common.h"
 #include "oru_cli_common_lib.h"
+
+const char *log_file = "/tmp/cli_out.txt";
+
+void write_to_log(const char *log_file, const char *message) {
+    FILE *file = fopen(log_file, "a");
+    if (file == NULL) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+
+    // Get the current time
+    time_t now = time(NULL);
+    char time_str[20];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+    // Write the timestamp and message to the log file
+    fprintf(file, "%s", message);
+    // fprintf(file, "[%s] %s", time_str, message);
+
+    fclose(file);
+}
 
 // cli_out function
 void cli_out(struct cli *cli, const char *format, ...) {
@@ -26,7 +62,9 @@ void cli_out(struct cli *cli, const char *format, ...) {
     va_start(args, format);
     vsnprintf(buffer, BUFFER_SIZE, format, args);
     va_end(args);
-    send(cli->sock, buffer, strlen(buffer), 0);
+    write_to_log(log_file, buffer);
+    cli = cli;
+    // send(cli->sock, buffer, strlen(buffer), 0);
 }
 
 typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp);
@@ -116,6 +154,9 @@ static cmd_list_t cmd_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM] = {
     [ORU_MSG_TYPE_KPI] = {
         {ORU_CMD_KPI_SHOW_STATISTICS, handle_kpi_show_statistics_req, handle_kpi_show_statistics_cmd, handle_kpi_show_statistics_resp},
         {ORU_CMD_KPI_CLEAR_STATISTICS, handle_kpi_clear_statistics_req, handle_kpi_clear_statistics_cmd, handle_kpi_clear_statistics_resp},
+    },
+    [ORU_MSG_TYPE_DEBUG] = {
+        {ORU_CMD_DEBUG_CMD_TEST, handle_debug_cmd_test_req, handle_debug_cmd_test_cmd, handle_debug_cmd_test_resp},
     }
 };
 
@@ -213,7 +254,13 @@ cmd_handler_t cmd_handler_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM+2] = {
         {"clear oran kpi statistics", ORU_CMD_KPI_CLEAR_STATISTICS},
         {"exit", MAX_CMD_NUM+ 1},  // Adding a unique code for exit
         {"help", MAX_CMD_NUM+ 2}   // Adding a unique code for help
+    },
+    [ORU_MSG_TYPE_DEBUG] = {
+        {"cmd test", ORU_CMD_DEBUG_CMD_TEST},
+        {"exit", MAX_CMD_NUM+ 1},  // Adding a unique code for exit
+        {"help", MAX_CMD_NUM+ 2}   // Adding a unique code for help
     }
+
 };
 
 uint16_t get_function_code(oru_msg_type_e msg_type, const char* command) {
@@ -1553,52 +1600,7 @@ int32_t handle_iface_show_interface_req(struct cli* cli, oru_general_msg_t* req,
     resp->header.msg_size = sizeof(oru_iface_show_interface_req_t) + sizeof(resp->body.param_num); 
 
     cli = cli;
-    printf("%s: %s\n", __func__, cli->cmd);
     return 0;
-}
-
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdbool.h>
-
-#define MAX_IFNAME_LEN 128
-#define MAX_CMD_OUTPUT_LEN 1024
-
-bool get_ifconfig_info(const char* ifname, char* output, size_t output_len) {
-    if (ifname == NULL || output == NULL) {
-        return false;
-    }
-
-    char cmd[MAX_IFNAME_LEN + 10]; // "ifconfig " + ifname + null terminator
-    snprintf(cmd, sizeof(cmd), "ifconfig %s", ifname);
-
-    FILE* pipe = popen(cmd, "r");
-    if (pipe == NULL) {
-        fprintf(stderr, "popen failed: %s\n", strerror(errno));
-        return false;
-    }
-
-    size_t total_read = 0;
-    char buffer[128];
-    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
-        size_t len = strlen(buffer);
-        if (total_read + len < output_len - 1) {
-            strcpy(output + total_read, buffer);
-            total_read += len;
-        } else {
-            break;
-        }
-    }
-
-    if (ferror(pipe)) {
-        fprintf(stderr, "fgets failed: %s\n", strerror(errno));
-        pclose(pipe);
-        return false;
-    }
-
-    pclose(pipe);
-    return true;
 }
 
 void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t* msg) {
@@ -1887,6 +1889,41 @@ void handle_kpi_clear_statistics_resp(struct cli *cli, oru_general_msg_t* msg) {
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
+// Command debug
+int32_t handle_debug_cmd_test_cmd(struct cli *cli, oru_general_msg_t* msg) {
+
+    cli = cli;
+    msg = msg;
+
+    printf("%s: %s\n", __func__, cli->cmd);
+    return 0;
+}
+
+int32_t handle_debug_cmd_test_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
+
+    cli = cli;
+    resp->header.msg_type = req->header.msg_type;
+    resp->header.func_id = req->header.func_id;
+
+#if 1 // TEST handle req to oam api
+    // handle_req_to_oam(cli, cli->cmd);
+    handle_req_to_oam(cli, req);
+#endif
+
+    printf("%s: %s\n", __func__, cli->cmd);
+
+    return 0;
+}
+
+void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg) {
+    msg = msg;
+    cli = cli;
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+
+    printf("%s: %s\n", __func__, cli->cmd);
+}
+
+
 // Command processing
 int32_t command_process(struct cli* cli) {
 
@@ -1911,7 +1948,7 @@ int32_t command_process(struct cli* cli) {
     // Set the message header
     req->header.msg_type = cli->mode;
     req->header.func_id = func_id;
-    req->header.msg_size = MSG_BODY_SIZE(req->body.param_num);
+    req->header.msg_size = MSG_BODY_SIZE(req->body.param_num) + sizeof(oru_msg_header_t);
 
     // command response handler
     if (handle_request(cli, req, resp) != 0) {

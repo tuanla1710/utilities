@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <string.h>
 
 // Constants
 #define BUFFER_SIZE 4096
@@ -18,6 +19,7 @@ typedef enum {
     ORU_MSG_TYPE_IFACE,
     ORU_MSG_TYPE_USER,
     ORU_MSG_TYPE_KPI, // Key Performance Indicator
+    ORU_MSG_TYPE_DEBUG, 
     ORU_MSG_TYPE_NUM
 } oru_msg_type_e;
 
@@ -30,6 +32,14 @@ struct cli {
     char cmd[BUFFER_SIZE];
 };
 
+typedef struct {
+    const char *cmd_prefix;
+    size_t prefix_len;
+    int mode_type;
+    const char *mode_string;
+} mode_entry_t;
+
+
 void print_help_mode() {
     printf("Available modes:\n");
     printf("  system\n");
@@ -39,6 +49,7 @@ void print_help_mode() {
     printf("  iface\n");
     printf("  user\n");
     printf("  kpi\n");
+    printf("  debug\n");
     printf("  help\n");
 }
 
@@ -143,6 +154,13 @@ void print_help_kpi() {
     printf("  help\n");
 }
 
+void print_help_debug() {
+    printf("oru-debug commands:\n");
+    printf("  cmd test\n");
+    printf("  exit\n");
+    printf("  help\n");    
+}
+
 void print_help_all() {
     print_help_system();
     print_help_sync();
@@ -151,6 +169,7 @@ void print_help_all() {
     print_help_iface();
     print_help_user();
     print_help_kpi();
+    print_help_debug();
 
     printf("\n");
     print_help_mode();
@@ -181,6 +200,9 @@ void print_help(oru_msg_type_e mode)
         case ORU_MSG_TYPE_KPI:
             print_help_kpi();
             break;
+        case ORU_MSG_TYPE_DEBUG:
+            print_help_debug();
+            break;
         case ORU_MSG_TYPE_NUM:
             print_help_mode();
             break;
@@ -190,13 +212,36 @@ void print_help(oru_msg_type_e mode)
     }
 }
 
+void print_and_clear_log(const char *log_file) {
+    FILE *file = fopen(log_file, "r");
+    if (file == NULL) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+
+    // Print all lines in the file
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+    fclose(file);
+
+    // Clear all content in the file
+    file = fopen(log_file, "w");
+    if (file == NULL) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    fclose(file);
+}
+
 void send_command(struct cli *cli) {
     int sock = 0;
     struct sockaddr_in serv_addr;
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation error");
-        return;
+        goto ERR;
     }
 
     serv_addr.sin_family = AF_INET;
@@ -210,8 +255,7 @@ void send_command(struct cli *cli) {
 
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         perror("Connection Failed");
-        close(sock);
-        return;
+        goto ERR;
     }
 
     // Calculate the size of the data to send
@@ -220,8 +264,7 @@ void send_command(struct cli *cli) {
     // Send the command to the server
     if (send(sock, (void*)cli, data_size, 0) < 0) {
         perror("Send failed");
-        close(sock);
-        return;
+        goto ERR;
     }
 
     // Receive the response from the server
@@ -236,35 +279,37 @@ void send_command(struct cli *cli) {
         }
     }
 
+    // open file and print all line in the file. Then clear all content in /tmp/mylogfile.log
+    print_and_clear_log("/tmp/cli_out.txt");
+
+
+
+ERR:
+
     close(sock);
 }
 
 char *get_mode(char *cmd) {
-    if (strncmp(cmd, "sync", 4) == 0) {
-        g_mode = ORU_MSG_TYPE_SYNC;        
-        return "oru-sync";
-    } else if (strncmp(cmd, "vlan", 4) == 0) {
-        g_mode = ORU_MSG_TYPE_VLAN;
-        return "oru-vlan";
-    } else if (strncmp(cmd, "cplane", 6) == 0) {
-        g_mode = ORU_MSG_TYPE_CPLANE;
-        return "oru-cplane";
-    } else if (strncmp(cmd, "iface", 4) == 0) {
-        g_mode = ORU_MSG_TYPE_IFACE;
-        return "oru-iface";
-    } else if (strncmp(cmd, "user", 4) == 0) {
-        g_mode = ORU_MSG_TYPE_USER;
-        return "oru-user";
-    } else if (strncmp(cmd, "kpi", 3) == 0) {
-        g_mode = ORU_MSG_TYPE_KPI;
-        return "oru-kpi";
-    } else if (strncmp(cmd, "system", 6) == 0) {
-        g_mode = ORU_MSG_TYPE_SYSTEM; 
-        return "oru-system";
-    } else {
-        g_mode = ORU_MSG_TYPE_NUM;
-        return "invalid mode";
+    static const mode_entry_t mode_table[] = {
+        {"sync", 4, ORU_MSG_TYPE_SYNC, "oru-sync"},
+        {"vlan", 4, ORU_MSG_TYPE_VLAN, "oru-vlan"},
+        {"cplane", 6, ORU_MSG_TYPE_CPLANE, "oru-cplane"},
+        {"iface", 4, ORU_MSG_TYPE_IFACE, "oru-iface"},
+        {"user", 4, ORU_MSG_TYPE_USER, "oru-user"},
+        {"kpi", 3, ORU_MSG_TYPE_KPI, "oru-kpi"},
+        {"system", 6, ORU_MSG_TYPE_SYSTEM, "oru-system"},
+        {"debug", 6, ORU_MSG_TYPE_DEBUG, "oru-debug"}
+    };
+
+    for (size_t i = 0; i < sizeof(mode_table) / sizeof(mode_table[0]); i++) {
+        if (strncmp(cmd, mode_table[i].cmd_prefix, mode_table[i].prefix_len) == 0) {
+            g_mode = mode_table[i].mode_type;
+            return (char *)mode_table[i].mode_string;
+        }
     }
+
+    g_mode = ORU_MSG_TYPE_NUM;
+    return "invalid mode";
 }
 
 int main(int argc, char *argv[]) {

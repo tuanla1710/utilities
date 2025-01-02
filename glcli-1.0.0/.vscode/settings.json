@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "oru_cli_common.h": "c",
+        "select.h": "c"
+    }
+}

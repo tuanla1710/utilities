@@ -18,6 +18,13 @@
 #define SERVER_IP "127.0.0.1"  // Change this to the server's IP address if needed
 #define SERVER_PORT 8090
 
+#define MAX_IFNAME_LEN 128
+#define MAX_CMD_OUTPUT_LEN 1024
+
+// PIPE defined
+#define PIPE_NAME "/tmp/oam_pipe"
+#define PIPE_NAME_RESP "/tmp/oam_pipe_resp"
+
 // Structure to hold the command and socket information
 struct cli {
     int mode;
@@ -128,6 +135,12 @@ typedef enum {
     ORU_CMD_KPI_NUM = ORU_CMD_KPI_CLEAR_STATISTICS
 } oru_cmd_kpi_e;
 
+// Debug command
+typedef enum {
+    ORU_CMD_DEBUG_CMD_TEST = 1,
+    ORU_CMD_DEBUG_NUM = ORU_CMD_DEBUG_CMD_TEST
+} oru_cmd_debug_e;
+
 #define MAX_CMD_NUM  ORU_CMD_SYSTEM_NUM
 
 typedef struct {
@@ -143,6 +156,7 @@ typedef enum {
     ORU_MSG_TYPE_IFACE,
     ORU_MSG_TYPE_USER,
     ORU_MSG_TYPE_KPI, // Key Performance Indicator
+    ORU_MSG_TYPE_DEBUG,
     ORU_MSG_TYPE_NUM
 } oru_msg_type_e;
 
@@ -442,11 +456,20 @@ int32_t handle_kpi_clear_statistics_cmd(struct cli *cli, oru_general_msg_t* msg)
 int32_t handle_kpi_clear_statistics_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp);
 void handle_kpi_clear_statistics_resp(struct cli *cli, oru_general_msg_t* msg);
 
+// Debug commands
+int32_t handle_debug_cmd_test_cmd(struct cli *cli, oru_general_msg_t* msg);
+int32_t handle_debug_cmd_test_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp);
+void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg);
+
+
 // Common functions
 void cli_out(struct cli *cli, const char *format, ...);
 int32_t handle_command(struct cli *cli, oru_msg_type_e msg_type, uint16_t func_id, oru_general_msg_t* msg);
 int32_t handle_request(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* rsp);
 int32_t command_process(struct cli *cli);
 uint16_t get_function_code(oru_msg_type_e msg_type, const char* command);
+
+// oam request function
+int handle_req_to_oam(struct cli* cli, oru_general_msg_t* req);
 
 #endif // ORU_CLI_COMMON_H
