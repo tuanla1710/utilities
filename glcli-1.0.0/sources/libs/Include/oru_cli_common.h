@@ -191,6 +191,48 @@ typedef struct {
     char ifacename[32];
 } oru_iface_show_interface_req_t;
 
+// ip address configuration 
+typedef struct {
+    char ip[32];
+    char iface[32];
+    int mask;
+} oru_iface_ip_address_req_t;
+
+typedef struct {
+    int32_t error_status;
+} oru_iface_ip_address_resp_t;
+
+// no ip address configuration 
+typedef struct {
+    char ip[32];
+    char iface[32];
+    int mask;
+} oru_iface_no_ip_address_req_t;
+
+typedef struct {
+    int32_t error_status;
+} oru_iface_no_ip_address_resp_t;
+
+
+// dhcp configuration
+typedef struct {
+    char iface[32];
+} oru_iface_dhcp_req_t;
+
+typedef struct {
+    int32_t error_status;
+} oru_iface_dhcp_resp_t;
+
+// no dhcp configuration
+typedef struct {
+    char iface[32];
+} oru_iface_no_dhcp_req_t;
+
+typedef struct {
+    int32_t error_status;
+} oru_iface_no_dhcp_resp_t;
+
+
 // vlan command msg type
 
 // sync command msg type

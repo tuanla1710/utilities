@@ -8,28 +8,19 @@
  * Copyright GIGALANE.
  */
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <stdarg.h>
-#include <string.h>
-
-
 #include <inttypes.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <time.h>
-#include <unistd.h>
 #include <dirent.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <utmp.h>
-
 
 #include "oru_cli_common.h"
 #include "oru_cli_common_lib.h"
@@ -1547,14 +1538,21 @@ void handle_iface_show_interface_brief_resp(struct cli *cli, oru_general_msg_t* 
 }
 
 int32_t handle_iface_show_interface_cmd(struct cli *cli, oru_general_msg_t* msg) {
-    char ifname[25] = {0};
+    char iface[25] = {0};
 
     // get interface name from "show interface IFNAME"
-    if (sscanf(cli->cmd, "show interface %24s", ifname) == 1) {
-        printf("Interface name: %s\n", ifname);
+    if (sscanf(cli->cmd, "show interface %24s", iface) == 1) {
+        printf("Interface name: %s\n", iface);
     } else {
         cli_out(cli, "Error - Invalid command: %s\n", cli->cmd);
         return -1;
+    }
+
+    // Validate and convert the interface
+    if (validate_and_convert_iface(iface) != 0)
+    {
+        cli_out(cli, "Error - Invalid interface: %s\n", iface);
+        return -1; // Error
     }
 
     msg->body.param_num = sizeof(oru_iface_show_interface_req_t) >> 2; // num of int32_t
@@ -1562,13 +1560,12 @@ int32_t handle_iface_show_interface_cmd(struct cli *cli, oru_general_msg_t* msg)
     oru_iface_show_interface_req_t *req = (oru_iface_show_interface_req_t *)&msg->body.param_value[0];
 
     // Update the interface name in the message
-    strncpy(req->ifacename, ifname, sizeof(ifname)-1);
+    strncpy(req->ifacename, iface, sizeof(iface)-1);
     req->ifacename[sizeof(req->ifacename) - 1] = '\0'; // Ensure null-termination
-
-    show_interface_info(cli, req->ifacename);
 
     cli = cli;
     printf("%s: %s\n", __func__, cli->cmd);
+
     return 0;
 }
 
@@ -1600,6 +1597,8 @@ int32_t handle_iface_show_interface_req(struct cli* cli, oru_general_msg_t* req,
     resp->header.msg_size = sizeof(oru_iface_show_interface_req_t) + sizeof(resp->body.param_num); 
 
     cli = cli;
+    printf("%s: %s\n", __func__, cli->cmd);
+
     return 0;
 }
 
@@ -1611,7 +1610,7 @@ void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t* msg) {
     printf("Interface name: %s\n", resp->ifacename);
 
     char output[MAX_CMD_OUTPUT_LEN];
-    if (get_ifconfig_info(resp->ifacename, output, sizeof(output))) {
+    if (show_interface_info(resp->ifacename, output, sizeof(output))) {
         cli_out(cli, "%s", output);
     } else {
         cli_out(cli, "Failed to get interface info\n");
@@ -1621,54 +1620,271 @@ void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t* msg) {
 }
 
 int32_t handle_iface_ip_address_cmd(struct cli *cli, oru_general_msg_t* msg) {
+    // Validate input
+    if (cli == NULL || msg == NULL) {
+        return -1;
+    }
 
-    cli = cli;
-    msg = msg;
-
+    // Print the command for debugging
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+
+    // Expected command format: "ip address <A.B.C.D>/<M> interface <IFNAME>"
+    char ip[20];
+    char iface[20];
+    int mask;
+
+    // Parse the command
+    if (sscanf(cli->cmd, "ip address %19[^/]/%d interface %19s", ip, &mask, iface) == 3) {
+        // Successfully parsed the command
+        printf("IP Address: %s\n", ip);
+        printf("Mask: %d\n", mask);
+        printf("Interface: %s\n", iface);
+
+        // Validate and convert the interface
+        if (validate_and_convert_iface(iface) != 0) {
+            cli_out(cli, "Error - Invalid interface: %s\n", iface);
+            return -1; // Error
+        }
+
+    } else {
+        // Failed to parse the command
+        cli_out(cli, "Error - Invalid command: %s\n", cli->cmd);
+        return -1; // Error
+    }
+
+    // Update the message
+    oru_iface_ip_address_req_t *req = (oru_iface_ip_address_req_t *)&msg->body.param_value[0];
+    msg->body.param_num = sizeof(oru_iface_ip_address_req_t) >> 2; // num of int32_t
+
+    strncpy(req->ip, ip, sizeof(ip) - 1);
+    req->ip[sizeof(req->ip) - 1] = '\0'; // Ensure null-termination
+    req->mask = mask;
+    strncpy(req->iface, iface, sizeof(iface) - 1);
+    req->iface[sizeof(req->iface) - 1] = '\0'; // Ensure null-termination
+
+    return 0; // Success
 }
 
 int32_t handle_iface_ip_address_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
+    int32_t errorStatus = 0;
+
+    oru_iface_ip_address_req_t *creq = (oru_iface_ip_address_req_t *)&req->body.param_value[0];
+
+    resp->body.param_num = sizeof(oru_iface_ip_address_resp_t) >> 2; // num of int32_t 
+    oru_iface_ip_address_resp_t *cresp = (oru_iface_ip_address_resp_t *)&resp->body.param_value[0];
+
+    if (check_ip_address(creq->iface, creq->ip, creq->mask) == 0) {
+        // Success
+        printf("IP address already exists in the database\n");
+        errorStatus = 0;
+    } else {
+        // Failed
+        printf("IP address does not exist in the database\n");
+        errorStatus = -1;
+    }
+
+    // set IP to interface linux
+    char cmd[100];
+    snprintf(cmd, sizeof(cmd), "ip addr add %s/%d dev %s", creq->ip, creq->mask, creq->iface);
+
+    // Execute the command
+    if (system(cmd) == 0) {
+        // Success
+        printf("Command executed successfully: %s\n", cmd);
+    } else {
+        // Failed
+        printf("Failed to execute command: %s\n", cmd);
+        errorStatus = -1;
+    }
+
+    // Update IP address to database
+    if (errorStatus == 0) {
+        // Update the IP address to the database
+        if (update_ip_address(creq->iface, creq->ip, creq->mask) == 0) {
+            // Success
+            printf("IP address added to database\n");
+        } else {
+            // Failed
+            printf("Failed to add IP address to database\n");
+            errorStatus = -1;
+        }
+    }
+
+    // Restart the networking service
+    if (system("systemctl restart networking") != 0) {
+        printf("Failed to restart networking service\n");
+        errorStatus = -1;
+    } else {
+        printf("Networking service restarted\n");
+    }
+
+    // Update error status
+    cresp->error_status = errorStatus;
+
     cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
+
     printf("%s: %s\n", __func__, cli->cmd);
     return 0;
 }
 
 void handle_iface_ip_address_resp(struct cli *cli, oru_general_msg_t* msg) {
-    msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+
+    oru_iface_ip_address_resp_t *resp = (oru_iface_ip_address_resp_t *)&msg->body.param_value[0];
+    if (resp->error_status == 0) {
+        cli_out(cli, "IP address added successfully\n");
+    } else {
+        cli_out(cli, "Failed to add IP address\n");
+    }
+
+    // msg = msg;
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
 int32_t handle_iface_no_ip_address_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
-    cli = cli;
-    msg = msg;
+    // Validate input
+    if (cli == NULL || msg == NULL) {
+        return -1;
+    }
+
+    // printf the command for debugging
+    printf("%s: %s\n", __func__, cli->cmd);
+
+    // Expected command format: "no ip address <A.B.C.D>/<M> interface <IFNAME>"
+    char ip[20];
+    char iface[20];
+    int mask;
+
+    // Parse the command
+    if (sscanf(cli->cmd, "no ip address %19[^/]/%d interface %19s", ip, &mask, iface) == 3) {
+        // Successfully parsed the command
+        printf("IP Address: %s\n", ip);
+        printf("Mask: %d\n", mask);
+        printf("Interface: %s\n", iface);
+
+        // Validate and convert the interface
+        if (validate_and_convert_iface(iface) != 0) {
+            cli_out(cli, "Error - Invalid interface: %s\n", iface);
+            return -1; // Error
+        }
+
+    } else {
+        // Failed to parse the command
+        cli_out(cli, "Error - Invalid command: %s\n", cli->cmd);
+        return -1; // Error
+    }
+
+    // Update the message
+    oru_iface_no_ip_address_req_t *req = (oru_iface_no_ip_address_req_t *)&msg->body.param_value[0];
+    msg->body.param_num = sizeof(oru_iface_no_ip_address_req_t) >> 2; // num of int32_t
+
+    strncpy(req->ip, ip, sizeof(ip) - 1);
+    req->ip[sizeof(req->ip) - 1] = '\0'; // Ensure null-termination
+    req->mask = mask;
+    strncpy(req->iface, iface, sizeof(iface) - 1);
+    req->iface[sizeof(req->iface) - 1] = '\0'; // Ensure null-termination
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+
+    return 0; // Success
 }
 
 int32_t handle_iface_no_ip_address_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
+    int32_t errorStatus = 0;
+
+    oru_iface_no_ip_address_req_t *creq = (oru_iface_no_ip_address_req_t *)&req->body.param_value[0];
+
+    resp->body.param_num = sizeof(oru_iface_no_ip_address_resp_t) >> 2; // num of int32_t
+    oru_iface_no_ip_address_resp_t *cresp = (oru_iface_no_ip_address_resp_t *)&resp->body.param_value[0];
+
+    // Construct the system command to remove IP address
+    char command[100] = {0};
+    snprintf(command, sizeof(command), "ip addr del %s/%d dev %s", creq->ip, creq->mask, creq->iface);
+
+    // Execute the system command
+    if (system(command) == 0) {
+        // Success
+        printf("IP address removed successfully\n");
+    } else {
+        // Failed
+        printf("Failed to remove IP address\n");
+        errorStatus = -1;
+    }
+
+    // Restart the networking service
+    if (system("systemctl restart networking") != 0) {
+        printf("Failed to restart networking service\n");
+        errorStatus = -1;
+    } else {
+        printf("Networking service restarted\n");
+    }
+
+    // Update error status
+    cresp->error_status = errorStatus;
+
     cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
+
     printf("%s: %s\n", __func__, cli->cmd);
     return 0;
 }
 
 void handle_iface_no_ip_address_resp(struct cli *cli, oru_general_msg_t* msg) {
-    msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+
+    oru_iface_no_ip_address_resp_t *resp = (oru_iface_no_ip_address_resp_t *)&msg->body.param_value[0];
+    if (resp->error_status == 0) {
+        cli_out(cli, "IP address removed successfully\n");
+    } else {
+        cli_out(cli, "Failed to remove IP address\n");
+    }
+
+    // msg = msg;
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
 int32_t handle_iface_dhcp_cmd(struct cli *cli, oru_general_msg_t* msg) {
+
+    // Validate input
+    if (cli == NULL || msg == NULL) {
+        return -1;
+    }
+
+    // printf the command for debugging
+    printf("%s: %s\n", __func__, cli->cmd);
+
+    // Expected command format: "dhcp interface <IFNAME>"
+    char iface[20];
+
+    // Parse the command
+    if (sscanf(cli->cmd, "dhcp interface %19s", iface) == 1) {
+        // Successfully parsed the command
+        printf("Interface: %s\n", iface);
+
+        // Validate and convert the interface
+        if (validate_and_convert_iface(iface) != 0) {
+            cli_out(cli, "Error - Invalid interface: %s\n", iface);
+            return -1; // Error
+        }         
+
+    } else {
+        // Failed to parse the command
+        printf("Invalid command format\n");
+        return -1; // Error
+    }
+
+    // Update the message
+    oru_iface_dhcp_req_t *req = (oru_iface_dhcp_req_t *)&msg->body.param_value[0];
+    msg->body.param_num = sizeof(oru_iface_dhcp_req_t) >> 2;
+
+    strncpy(req->iface, iface, sizeof(iface) - 1);
+    req->iface[sizeof(req->iface) - 1] = '\0'; // Ensure null-termination
 
     cli = cli;
     msg = msg;
@@ -1678,35 +1894,156 @@ int32_t handle_iface_dhcp_cmd(struct cli *cli, oru_general_msg_t* msg) {
 }
 
 int32_t handle_iface_dhcp_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
+    int32_t errorStatus = 0;
 
-    cli = cli;
+    oru_iface_dhcp_req_t *creq = (oru_iface_dhcp_req_t *)&req->body.param_value[0];
+    resp->body.param_num = sizeof(oru_iface_dhcp_resp_t) >> 2; // num of int32_t
+    oru_iface_dhcp_resp_t *cresp = (oru_iface_dhcp_resp_t *)&resp->body.param_value[0];
+
+    // Construct the system command to enable DHCP
+    char command[256];
+    snprintf(command, sizeof(command), "dhclient %s", creq->iface);
+
+    // Execute the system command
+    if (system(command) != 0) {
+        printf("Failed to enable DHCP on interface %s\n", creq->iface);
+        errorStatus = -1;
+    } else {
+        printf("DHCP enabled on interface %s\n", creq->iface);
+
+        // Restart the networking service
+        if (system("systemctl restart networking") != 0) {
+            printf("Failed to restart networking service\n");
+            errorStatus = -1;
+        } else {
+            printf("Networking service restarted\n");
+        }
+
+        // Update the database
+        if (update_dhcp(creq->iface, 1) != 0) {
+            printf("Failed to enable DHCP in the database\n");
+            errorStatus = -1;
+        } else {
+            printf("DHCP enabled in the database\n");
+        }
+    }
+
+    // Update error status
+    cresp->error_status = errorStatus;
+
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+
+    return errorStatus;
 }
 
 void handle_iface_dhcp_resp(struct cli *cli, oru_general_msg_t* msg) {
+
+    oru_iface_dhcp_resp_t *resp = (oru_iface_dhcp_resp_t *)&msg->body.param_value[0];
+
+    if (resp->error_status == 0) {
+        cli_out(cli, "DHCP enabled successfully\n");
+    } else {
+        cli_out(cli, "Failed to enable DHCP\n");
+    }
+
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
 int32_t handle_iface_no_dhcp_cmd(struct cli *cli, oru_general_msg_t* msg) {
+    // Validate input
+    if (cli == NULL || msg == NULL) {
+        return -1;
+    }
 
-    cli = cli;
-    msg = msg;
+    // Print the command for debugging
+    printf("%s: %s\n", __func__, cli->cmd);
+
+    // Expected command format: "no dhcp interface <IFNAME>"
+    char iface[20];
+
+    // Parse the command
+    if (sscanf(cli->cmd, "no dhcp interface %19s", iface) != 1) {
+        // Failed to parse the command
+        printf("Invalid command format\n");
+        return -1; // Error
+    }
+
+    // Successfully parsed the command
+    printf("Interface: %s\n", iface);
+
+    // Validate and convert the interface
+    if (validate_and_convert_iface(iface) != 0) {
+        cli_out(cli, "Error - Invalid interface: %s\n", iface);
+        return -1; // Error
+    }
+
     printf("%s: %s\n", __func__, cli->cmd);
     return 0;
 }
 
 int32_t handle_iface_no_dhcp_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
+    int32_t errorStatus = 0;
 
-    cli = cli;
+    oru_iface_no_dhcp_req_t *creq = (oru_iface_no_dhcp_req_t *)&req->body.param_value[0];
+    resp->body.param_num = sizeof(oru_iface_no_dhcp_resp_t) >> 2; // num of int32_t
+    oru_iface_no_dhcp_resp_t *cresp = (oru_iface_no_dhcp_resp_t *)&resp->body.param_value[0];
+
+    // Construct and execute the system command to disable DHCP
+    char command[512];
+    snprintf(command, sizeof(command), "dhclient -r %s", creq->iface);
+    if (system(command) != 0) {
+        printf("Failed to disable DHCP on interface %s\n", creq->iface);
+        errorStatus = -1;
+    } else {
+        printf("DHCP disabled on interface %s\n", creq->iface);
+    }
+
+    // Get static IP from database
+    char ip[20], mask[20], gateway[20], dns1[20], dns2[20];
+    if (get_static_ip(creq->iface, ip, mask, gateway, dns1, dns2) != 0) {
+        printf("Failed to retrieve static IP address from database\n");
+        errorStatus = -1;
+    } else {
+        printf("Static IP address retrieved from database\n");
+    }
+
+    // Construct and execute the command to set static IP
+    snprintf(command, sizeof(command), "sudo sed -i '/iface %s inet/c\\iface %s inet static\\naddress %s\\nnetmask %s\\ngateway %s\\ndns-nameservers %s %s' /etc/network/interfaces",
+             creq->iface, creq->iface, ip, mask, gateway, dns1, dns2);
+    if (system(command) != 0) {
+        printf("Failed to execute command: %s\n", command);
+        errorStatus = -1;
+    } else {
+        printf("Command executed successfully: %s\n", command);
+    }
+
+    // Restart the networking service
+    if (system("systemctl restart networking") != 0) {
+        printf("Failed to restart networking service\n");
+        errorStatus = -1;
+    } else {
+        printf("Networking service restarted\n");
+    }
+
+    // Update the database if no errors occurred
+    if (errorStatus == 0 && update_dhcp(creq->iface, 0) != 0) {
+        printf("Failed to disable DHCP in the database\n");
+        errorStatus = -1;
+    } else if (errorStatus == 0) {
+        printf("DHCP disabled in the database\n");
+    }
+
+    // Update error status
+    cresp->error_status = errorStatus;
+
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+
+    return errorStatus;
 }
 
 void handle_iface_no_dhcp_resp(struct cli *cli, oru_general_msg_t* msg) {

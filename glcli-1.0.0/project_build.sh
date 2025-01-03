@@ -87,6 +87,9 @@ function main() {
             code_check
             ;;
         build)
+            echo ">init..."
+            project_init
+
             echo ">Building..."
             package_build
             ;;
