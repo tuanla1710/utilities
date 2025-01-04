@@ -1,7 +1,13 @@
 {
     "files.associations": {
         "oru_cli_common.h": "c",
-        "select.h": "c"
+        "select.h": "c",
+        "netconf.h": "c",
+        "sysrepo.h": "c",
+        "libyang.h": "c",
+        "prctl.h": "c",
+        "string.h": "c",
+        "inet.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

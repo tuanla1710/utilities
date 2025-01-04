@@ -24,7 +24,10 @@ CC ?= riscv32-poky-linux-gcc
 CSTDFLAG = -std=gnu99
 
 CFLAGS = -Wall -Wextra -DENABLE_RX_CH_REMAP -DENABLE_TX_CH_REMAP -DENABLE_FB_CH_REMAP 
-IFLAGS = -I$(INCDIR1)
+IFLAGS = -I$(INCDIR1) -I/usr/include/libxml2
+
+# Linker flags
+LDFLAGS = -lnetconf2 -lm -lpthread -lsysrepo -l:libyang.so -lxml2
 
 CLIENT_TARGET = oru-cli
 SERVER_TARGET = oru-cli-server
@@ -35,7 +38,7 @@ all: $(CLIENT_TARGET) $(SERVER_TARGET)
 
 # Server target
 $(SERVER_TARGET): $(SERVER_OBJFILES)
-	$(CC) $(CSTDFLAG) -o $@ $^ -lm -lpthread
+	$(CC) $(CSTDFLAG) -o $@ $^ $(LDFLAGS)
 
 # Client target
 $(CLIENT_TARGET): $(CLIENT_OBJFILES)

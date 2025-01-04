@@ -81,6 +81,7 @@ void print_help_system() {
     printf("  show temperature\n");
     printf("  show system software info\n");
     printf("  show system image info\n");
+    printf("  show sysrepo info\n");
     printf("  exit\n");
     printf("  help\n");
 }

@@ -97,6 +97,7 @@ static cmd_list_t cmd_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM] = {
         {ORU_CMD_SYSTEM_SHOW_TEMPERATURE, handle_system_show_temperature_req, handle_system_show_temperature_cmd, handle_system_show_temperature_resp},
         {ORU_CMD_SYSTEM_SHOW_SYSTEM_SOFTWARE_INFO, handle_system_show_system_software_info_req, handle_system_show_system_software_info_cmd, handle_system_show_system_software_info_resp},
         {ORU_CMD_SYSTEM_SHOW_SYSTEM_IMAGE_INFO, handle_system_show_system_image_info_req, handle_system_show_system_image_info_cmd, handle_system_show_system_image_info_resp},
+        {ORU_CMD_SYSTEM_SHOW_SYSREPO_INFO, handle_system_show_sysrepo_info_req, handle_system_show_sysrepo_info_cmd, handle_system_show_sysrepo_info_resp},
     },
     [ORU_MSG_TYPE_SYNC] = {
         {ORU_CMD_SYNC_SHOW_PTP_STATUS, handle_sync_show_ptp_status_req, handle_sync_show_ptp_status_cmd, handle_sync_show_ptp_status_resp},
@@ -183,6 +184,7 @@ cmd_handler_t cmd_handler_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM+2] = {
         {"show temperature", ORU_CMD_SYSTEM_SHOW_TEMPERATURE},
         {"show system software info", ORU_CMD_SYSTEM_SHOW_SYSTEM_SOFTWARE_INFO},
         {"show system image info", ORU_CMD_SYSTEM_SHOW_SYSTEM_IMAGE_INFO},
+        {"show sysrepo info", ORU_CMD_SYSTEM_SHOW_SYSREPO_INFO},
         {"exit", MAX_CMD_NUM+ 1},  // Adding a unique code for exit
         {"help", MAX_CMD_NUM+ 2}   // Adding a unique code for help
     },
@@ -322,17 +324,16 @@ int32_t handle_system_show_banner_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_system_show_banner_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;  
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_banner_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -344,18 +345,16 @@ int32_t handle_system_show_inventory_cmd(struct cli *cli, oru_general_msg_t* msg
 }
 
 int32_t handle_system_show_inventory_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
-
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_inventory_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -369,18 +368,17 @@ int32_t handle_system_show_system_info_cmd(struct cli *cli, oru_general_msg_t* m
 }
 
 int32_t handle_system_show_system_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
-
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_system_info_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    printf("%s: %s\n", __func__, cli->cmd);
 }
 
 int32_t handle_system_write_memory_cmd(struct cli *cli, oru_general_msg_t* msg) {
@@ -393,18 +391,17 @@ int32_t handle_system_write_memory_cmd(struct cli *cli, oru_general_msg_t* msg) 
 }
 
 int32_t handle_system_write_memory_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
-
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_write_memory_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    printf("%s: %s\n", __func__, cli->cmd);
 }
 
 int32_t handle_system_hostname_cmd(struct cli *cli, oru_general_msg_t* msg) {
@@ -466,18 +463,16 @@ int32_t handle_system_factory_defaults_cmd(struct cli *cli, oru_general_msg_t* m
 }
 
 int32_t handle_system_factory_defaults_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
-
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_factory_defaults_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -491,18 +486,17 @@ int32_t handle_system_save_config_cmd(struct cli *cli, oru_general_msg_t* msg) {
 }
 
 int32_t handle_system_save_config_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
-
     cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_save_config_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -522,12 +516,12 @@ int32_t handle_system_restore_config_req(struct cli* cli, oru_general_msg_t* req
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_restore_config_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -572,12 +566,12 @@ int32_t handle_system_write_default_req(struct cli* cli, oru_general_msg_t* req,
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_write_default_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -651,8 +645,12 @@ int32_t handle_system_show_clock_req(struct cli* cli, oru_general_msg_t* req, or
 }
 
 void handle_system_show_clock_resp(struct cli* cli, oru_general_msg_t* msg) {
+
+    /* show clock */
+    display_system_clock(cli);
+
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -672,12 +670,12 @@ int32_t handle_system_cpuload_threshold_req(struct cli* cli, oru_general_msg_t* 
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_cpuload_threshold_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -697,12 +695,12 @@ int32_t handle_system_memory_usage_threshold_req(struct cli* cli, oru_general_ms
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_memory_usage_threshold_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -727,7 +725,11 @@ int32_t handle_system_show_cpuload_req(struct cli* cli, oru_general_msg_t* req, 
 
 void handle_system_show_cpuload_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+
+    /* show cpuload */
+    display_system_cpu_load(cli);
+
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -751,8 +753,12 @@ int32_t handle_system_show_memory_usage_req(struct cli* cli, oru_general_msg_t* 
 }
 
 void handle_system_show_memory_usage_resp(struct cli* cli, oru_general_msg_t* msg) {
+
+    /* show memory-usage */
+    show_memory_usage(cli);
+
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -767,17 +773,16 @@ int32_t handle_system_show_temperature_cmd(struct cli *cli, oru_general_msg_t* m
 
 int32_t handle_system_show_temperature_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_temperature_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -792,7 +797,6 @@ int32_t handle_system_danger_temperature_threshold_cmd(struct cli *cli, oru_gene
 
 int32_t handle_system_danger_temperature_threshold_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
@@ -817,7 +821,6 @@ int32_t handle_system_high_high_temperature_threshold_cmd(struct cli *cli, oru_g
 
 int32_t handle_system_high_high_temperature_threshold_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
@@ -842,7 +845,6 @@ int32_t handle_system_high_temperature_threshold_cmd(struct cli *cli, oru_genera
 
 int32_t handle_system_high_temperature_threshold_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
@@ -851,6 +853,7 @@ int32_t handle_system_high_temperature_threshold_req(struct cli* cli, oru_genera
 }
 
 void handle_system_high_temperature_threshold_resp(struct cli* cli, oru_general_msg_t* msg) {
+
     msg = msg;
     cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
@@ -867,7 +870,6 @@ int32_t handle_system_low_temperature_threshold_cmd(struct cli *cli, oru_general
 
 int32_t handle_system_low_temperature_threshold_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
@@ -892,17 +894,16 @@ int32_t handle_system_show_system_software_info_cmd(struct cli *cli, oru_general
 
 int32_t handle_system_show_system_software_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_system_software_info_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -917,20 +918,40 @@ int32_t handle_system_show_system_image_info_cmd(struct cli *cli, oru_general_ms
 
 int32_t handle_system_show_system_image_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_system_show_system_image_info_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
+int32_t handle_system_show_sysrepo_info_cmd(struct cli *cli, oru_general_msg_t* msg) {
+    cli = cli;
+    msg = msg;
+    printf("%s: %s\n", __func__, cli->cmd);
+    return 0;
+}
+
+int32_t handle_system_show_sysrepo_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
+    cli = cli;
+    resp->header.msg_type = req->header.msg_type;
+    resp->header.func_id = req->header.func_id;
+    printf("%s: %s\n", __func__, cli->cmd);
+    return 0;
+}
+
+void handle_system_show_sysrepo_info_resp(struct cli* cli, oru_general_msg_t* msg) {
+    msg = msg;
+
+    show_sysrepoctl_list(cli);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+}
 
 // Sync commands
 int32_t handle_sync_show_ptp_status_cmd(struct cli *cli, oru_general_msg_t* msg) {
@@ -944,17 +965,16 @@ int32_t handle_sync_show_ptp_status_cmd(struct cli *cli, oru_general_msg_t* msg)
 
 int32_t handle_sync_show_ptp_status_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_show_ptp_status_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -969,17 +989,16 @@ int32_t handle_sync_show_sync_info_cmd(struct cli *cli, oru_general_msg_t* msg) 
 
 int32_t handle_sync_show_sync_info_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_show_sync_info_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -994,17 +1013,16 @@ int32_t handle_sync_mode_ptp_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_sync_mode_ptp_req(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_mode_ptp_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1019,17 +1037,16 @@ int32_t handle_sync_mode_synce_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_sync_mode_synce_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_mode_synce_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1044,17 +1061,16 @@ int32_t handle_sync_mode_freerun_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_sync_mode_freerun_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_mode_freerun_resp(struct cli* cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1069,17 +1085,16 @@ int32_t handle_sync_show_synce_status_cmd(struct cli *cli, oru_general_msg_t* ms
 
 int32_t handle_sync_show_synce_status_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_sync_show_synce_status_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1220,17 +1235,16 @@ int32_t handle_cplane_show_oran_prach_cplane_info_cmd(struct cli *cli, oru_gener
 
 int32_t handle_cplane_show_oran_prach_cplane_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_cplane_show_oran_prach_cplane_info_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1246,17 +1260,16 @@ int32_t handle_vlan_range_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_vlan_range_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_vlan_range_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1271,17 +1284,16 @@ int32_t handle_vlan_show_all_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_vlan_show_all_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_vlan_show_all_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1296,17 +1308,16 @@ int32_t handle_vlan_show_brief_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_vlan_show_brief_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_vlan_show_brief_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1323,17 +1334,16 @@ int32_t handle_iface_show_sfp_cmd(struct cli *cli, oru_general_msg_t* msg) {
 
 int32_t handle_iface_show_sfp_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_show_sfp_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1348,17 +1358,16 @@ int32_t handle_iface_oran_ecpri_ul_mtu_cmd(struct cli *cli, oru_general_msg_t* m
 
 int32_t handle_iface_oran_ecpri_ul_mtu_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_ecpri_ul_mtu_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1373,17 +1382,16 @@ int32_t handle_iface_oran_ecpri_mac_destination_cmd(struct cli *cli, oru_general
 
 int32_t handle_iface_oran_ecpri_mac_destination_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_ecpri_mac_destination_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1398,17 +1406,16 @@ int32_t handle_iface_show_oran_ecpri_info_cmd(struct cli *cli, oru_general_msg_t
 
 int32_t handle_iface_show_oran_ecpri_info_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_show_oran_ecpri_info_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1423,17 +1430,16 @@ int32_t handle_iface_oran_ecpri_vlan_control_enable_cmd(struct cli *cli, oru_gen
 
 int32_t handle_iface_oran_ecpri_vlan_control_enable_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_ecpri_vlan_control_enable_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1448,17 +1454,16 @@ int32_t handle_iface_oran_ecpri_vlan_control_disable_cmd(struct cli *cli, oru_ge
 
 int32_t handle_iface_oran_ecpri_vlan_control_disable_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_ecpri_vlan_control_disable_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1473,17 +1478,16 @@ int32_t handle_iface_oran_ecpri_vlan_id_cmd(struct cli *cli, oru_general_msg_t* 
 
 int32_t handle_iface_oran_ecpri_vlan_id_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_ecpri_vlan_id_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1498,17 +1502,16 @@ int32_t handle_iface_oran_port_trunk_allowed_vlan_add_cmd(struct cli *cli, oru_g
 
 int32_t handle_iface_oran_port_trunk_allowed_vlan_add_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_iface_oran_port_trunk_allowed_vlan_add_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -1533,7 +1536,9 @@ int32_t handle_iface_show_interface_brief_req(struct cli* cli, oru_general_msg_t
 
 void handle_iface_show_interface_brief_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+
+    show_ip_interface_brief(cli);
+
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -2047,8 +2052,16 @@ int32_t handle_iface_no_dhcp_req(struct cli* cli, oru_general_msg_t* req, oru_ge
 }
 
 void handle_iface_no_dhcp_resp(struct cli *cli, oru_general_msg_t* msg) {
+
+    oru_iface_no_dhcp_resp_t *resp = (oru_iface_no_dhcp_resp_t *)&msg->body.param_value[0];
+
+    if (resp->error_status == 0) {
+        cli_out(cli, "DHCP enabled successfully\n");
+    } else {
+        cli_out(cli, "Failed to enable DHCP\n");
+    }
+
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -2071,7 +2084,7 @@ int32_t handle_iface_show_ip_interface_brief_req(struct cli* cli, oru_general_ms
 
 void handle_iface_show_ip_interface_brief_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    show_ip_interface_brief(cli);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -2187,16 +2200,16 @@ int32_t handle_kpi_show_statistics_cmd(struct cli *cli, oru_general_msg_t* msg) 
 
 int32_t handle_kpi_show_statistics_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
+
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_kpi_show_statistics_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
 
     printf("%s: %s\n", __func__, cli->cmd);
 }
@@ -2212,16 +2225,16 @@ int32_t handle_kpi_clear_statistics_cmd(struct cli *cli, oru_general_msg_t* msg)
 
 int32_t handle_kpi_clear_statistics_req(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
 
-    cli = cli;
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
+
     printf("%s: %s\n", __func__, cli->cmd);
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_kpi_clear_statistics_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
 
     printf("%s: %s\n", __func__, cli->cmd);
 }
@@ -2243,8 +2256,9 @@ int32_t handle_debug_cmd_test_req(struct cli* cli, oru_general_msg_t* req, oru_g
     resp->header.func_id = req->header.func_id;
 
 #if 1 // TEST handle req to oam api
-    // handle_req_to_oam(cli, cli->cmd);
-    handle_req_to_oam(cli, req);
+    // OAM_PIPE_LOCK
+    // handle_req_to_oam(cli, req);
+    // OAM_PIPE_UNLOCK
 #endif
 
     printf("%s: %s\n", __func__, cli->cmd);
@@ -2256,6 +2270,12 @@ void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
     cli = cli;
     // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // display_sysrepo_version(cli);
+
+    // display_sysrepoctl_list(cli);
+    printf("%s: %s\n", __func__, cli->cmd);
+
+    show_sysrepoctl_list(cli);
 
     printf("%s: %s\n", __func__, cli->cmd);
 }
