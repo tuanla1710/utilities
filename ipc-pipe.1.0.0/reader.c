@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include <errno.h>
 
-#include "oru_cli_common.h"
+#include "oru_cli_common_define.h"
 
 // Constants
 #define PIPE_NAME "/tmp/oam_pipe"
@@ -90,7 +90,99 @@ void dump_data(const char *buffer, size_t length) {
         }
     }
     printf("\n");
-}
+} 
+
+#if 0
+
+typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp);
+typedef struct {
+    uint16_t func_id;
+    ReqParser req_parser;
+} cmd_list_t;
+
+// Command list
+static cmd_list_t cmd_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM] = {
+    [ORU_MSG_TYPE_SYSTEM] = {
+        {ORU_CMD_SYSTEM_SHOW_BANNER, oam_handle_system_show_banner_req},
+        {ORU_CMD_SYSTEM_SHOW_INVENTORY, oam_handle_system_show_inventory_req},
+        {ORU_CMD_SYSTEM_SHOW_SYSTEM_INFO, oam_handle_system_show_system_info_req},
+        {ORU_CMD_SYSTEM_WRITE_MEMORY, oam_handle_system_write_memory_req},
+        {ORU_CMD_SYSTEM_HOSTNAME, oam_handle_system_hostname_req},
+        {ORU_CMD_SYSTEM_NO_HOSTNAME, oam_handle_system_no_hostname_req},
+        {ORU_CMD_SYSTEM_FACTORY_DEFAULTS, oam_handle_system_factory_defaults_req},
+        {ORU_CMD_SYSTEM_SAVE_CONFIG, oam_handle_system_save_config_req},
+        {ORU_CMD_SYSTEM_RESTORE_CONFIG, oam_handle_system_restore_config_req},
+        {ORU_CMD_SYSTEM_LOGIN, oam_handle_system_login_req},
+        {ORU_CMD_SYSTEM_WRITE_DEFAULT, oam_handle_system_write_default_req},
+        {ORU_CMD_SYSTEM_SHOW_HOSTNAME, oam_handle_system_show_hostname_req},
+        {ORU_CMD_SYSTEM_CLOCK_SET, oam_handle_system_clock_set_req},
+        {ORU_CMD_SYSTEM_SHOW_CLOCK, oam_handle_system_show_clock_req},
+        {ORU_CMD_SYSTEM_CPULOAD_THRESHOLD, oam_handle_system_cpuload_threshold_req},
+        {ORU_CMD_SYSTEM_MEMORY_USAGE_THRESHOLD, oam_handle_system_memory_usage_threshold_req},
+        {ORU_CMD_SYSTEM_SHOW_CPULOAD, oam_handle_system_show_cpuload_req},
+        {ORU_CMD_SYSTEM_SHOW_MEMORY_USAGE, oam_handle_system_show_memory_usage_req},
+        {ORU_CMD_SYSTEM_DANGER_TEMPERATURE_THRESHOLD, oam_handle_system_danger_temperature_threshold_req},
+        {ORU_CMD_SYSTEM_HIGH_HIGH_TEMPERATURE_THRESHOLD, oam_handle_system_high_high_temperature_threshold_req},
+        {ORU_CMD_SYSTEM_HIGH_TEMPERATURE_THRESHOLD, oam_handle_system_high_temperature_threshold_req},
+        {ORU_CMD_SYSTEM_LOW_TEMPERATURE_THRESHOLD, oam_handle_system_low_temperature_threshold_req},
+        {ORU_CMD_SYSTEM_SHOW_TEMPERATURE, oam_handle_system_show_temperature_req},
+        {ORU_CMD_SYSTEM_SHOW_SYSTEM_SOFTWARE_INFO, oam_handle_system_show_system_software_info_req},
+        {ORU_CMD_SYSTEM_SHOW_SYSTEM_IMAGE_INFO, oam_handle_system_show_system_image_info_req},
+        {ORU_CMD_SYSTEM_SHOW_SYSREPO_INFO, oam_handle_system_show_sysrepo_info_req},
+    },
+    [ORU_MSG_TYPE_SYNC] = {
+        {ORU_CMD_SYNC_SHOW_PTP_STATUS, oam_handle_sync_show_ptp_status_req},
+        {ORU_CMD_SYNC_SHOW_SYNC_INFO, oam_handle_sync_show_sync_info_req},
+        {ORU_CMD_SYNC_MODE_PTP, oam_handle_sync_mode_ptp_req},
+        {ORU_CMD_SYNC_MODE_SYNC_E, oam_handle_sync_mode_synce_req},
+        {ORU_CMD_SYNC_MODE_FREERUN, oam_handle_sync_mode_freerun_req},
+        {ORU_CMD_SYNC_SHOW_SYNCE_STATUS, oam_handle_sync_show_synce_status_req},
+    },
+    [ORU_MSG_TYPE_CPLANE] = {
+        {ORU_CMD_CPLANE_SHOW_ORAN_ATTEN_STATUS, oam_handle_cplane_show_oran_atten_status_req},
+        {ORU_CMD_CPLANE_SHOW_PWR_STATUS, oam_handle_cplane_show_pwr_status_req},
+        {ORU_CMD_CPLANE_SHOW_PORT_INFO, oam_handle_cplane_show_port_info_req},
+        {ORU_CMD_CPLANE_POWER_AMP, oam_handle_cplane_power_amp_req},
+        {ORU_CMD_CPLANE_TX_DPD, oam_handle_cplane_tx_dpd_req},
+        {ORU_CMD_CPLANE_SHOW_ORAN_PRACH_CPLANE_INFO, oam_handle_cplane_show_oran_prach_cplane_info_req},
+    },
+    [ORU_MSG_TYPE_VLAN] = {
+        {ORU_CMD_VLAN_RANGE, oam_handle_vlan_range_req},
+        {ORU_CMD_VLAN_SHOW_ALL, oam_handle_vlan_show_all_req},
+        {ORU_CMD_VLAN_SHOW_BRIEF, oam_handle_vlan_show_brief_req},        
+    },
+    [ORU_MSG_TYPE_IFACE] = {
+        {ORU_CMD_IFACE_SHOW_SFP, oam_handle_iface_show_sfp_req},
+        {ORU_CMD_IFACE_ORAN_ECPRI_UL_MTU, oam_handle_iface_oran_ecpri_ul_mtu_req},
+        {ORU_CMD_IFACE_ORAN_ECPRI_MAC_DESTINATION, oam_handle_iface_oran_ecpri_mac_destination_req},
+        {ORU_CMD_IFACE_SHOW_ORAN_ECPRI_INFO, oam_handle_iface_show_oran_ecpri_info_req},
+        {ORU_CMD_IFACE_ORAN_ECPRI_VLAN_CONTROL_ENABLE, oam_handle_iface_oran_ecpri_vlan_control_enable_req},
+        {ORU_CMD_IFACE_ORAN_ECPRI_VLAN_CONTROL_DISABLE, oam_handle_iface_oran_ecpri_vlan_control_disable_req},
+        {ORU_CMD_IFACE_ORAN_ECPRI_VLAN_ID, oam_handle_iface_oran_ecpri_vlan_id_req},
+        {ORU_CMD_IFACE_ORAN_PORT_TRUNK_ALLOWED_VLAN_ADD, oam_handle_iface_oran_port_trunk_allowed_vlan_add_req},
+        {ORU_CMD_IFACE_SHOW_INTERFACE_BRIEF, oam_handle_iface_show_interface_brief_req},
+        {ORU_CMD_IFACE_SHOW_INTERFACE, oam_handle_iface_show_interface_req},
+        {ORU_CMD_IFACE_IP_ADDRESS, oam_handle_iface_ip_address_req},
+        {ORU_CMD_IFACE_NO_IP_ADDRESS, oam_handle_iface_no_ip_address_req},
+        {ORU_CMD_IFACE_DHCP, oam_handle_iface_dhcp_req},
+        {ORU_CMD_IFACE_NO_DHCP, oam_handle_iface_no_dhcp_req},
+        {ORU_CMD_IFACE_SHOW_IP_INTERFACE_BRIEF, oam_handle_iface_show_ip_interface_brief_req},
+    },
+    [ORU_MSG_TYPE_USER] = {
+        {ORU_CMD_USER_SHOW_USER, oam_handle_user_show_user_req},
+        {ORU_CMD_USER_ADD_USER, oam_handle_user_add_user_req},
+        {ORU_CMD_USER_DEL_USER, oam_handle_user_del_user_req},
+        {ORU_CMD_USER_CHANGE_PASSWORD, oam_handle_user_change_password_req},
+    },
+    [ORU_MSG_TYPE_KPI] = {
+        {ORU_CMD_KPI_SHOW_STATISTICS, oam_handle_kpi_show_statistics_req},
+        {ORU_CMD_KPI_CLEAR_STATISTICS, oam_handle_kpi_clear_statistics_req},
+    },
+    [ORU_MSG_TYPE_DEBUG] = {
+        {ORU_CMD_DEBUG_CMD_TEST, oam_handle_debug_cmd_test_req},
+    }
+};
+#endif
 
 // Unpack the request data from the buffer
 bool unpack_data_from_buffer(const char *buffer, const char *key, oru_general_msg_t *req) {
