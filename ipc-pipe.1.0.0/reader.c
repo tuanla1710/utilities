@@ -20,81 +20,81 @@
 #define LOG_FILE "/tmp/cli_out.txt"
 #define REPLY_COUNT 4
 
-void log_error(const char *message) {
-    perror(message);  // Log the error with a description of the problem
-}
+// Function prototypes
+void oam_handle_debug_req_info(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_banner_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_inventory_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_system_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_write_memory_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_hostname_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_no_hostname_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_factory_defaults_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_save_config_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_restore_config_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_login_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_write_default_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_hostname_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_clock_set_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_clock_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_cpuload_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_memory_usage_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_cpuload_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_memory_usage_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_danger_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_high_high_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_high_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_low_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_temperature_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_system_software_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_system_image_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_system_show_sysrepo_info_req(struct cli *cli, oru_general_msg_t* msg);
 
-bool create_fifo_if_needed(const char *fifo_name) {
-    if (access(fifo_name, F_OK) == -1) {
-        if (mkfifo(fifo_name, 0666) == -1) {
-            log_error("mkfifo failed");
-            return false;
-        }
-    }
-    return true; 
-}
+int32_t oam_handle_sync_show_ptp_status_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_sync_show_sync_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_sync_mode_ptp_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_sync_mode_synce_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_sync_mode_freerun_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_sync_show_synce_status_req(struct cli *cli, oru_general_msg_t* msg);
 
-ssize_t read_from_fifo(int fd, char *buffer, size_t size) {
-    ssize_t bytesRead = read(fd, buffer, size);
-    if (bytesRead == -1) {
-        log_error("read failed");
-        return -1;  
-    }
-    return bytesRead;
-}
+int32_t oam_handle_cplane_show_oran_atten_status_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_cplane_show_pwr_status_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_cplane_show_port_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_cplane_power_amp_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_cplane_tx_dpd_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_cplane_show_oran_prach_cplane_info_req(struct cli *cli, oru_general_msg_t* msg);
 
-bool write_to_fifo(int fd, const char *message) {
-    if (write(fd, message, strlen(message) + 1) == -1) {
-        log_error("write failed");
-        return false;
-    }
-    return true;
-}
+int32_t oam_handle_vlan_range_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_vlan_show_all_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_vlan_show_brief_req(struct cli *cli, oru_general_msg_t* msg);
 
-void write_to_log(const char *message) {
-    FILE *file = fopen(LOG_FILE, "a");
-    if (!file) {
-        log_error("fopen failed");
-        return;
-    }
+int32_t oam_handle_iface_show_sfp_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_ecpri_ul_mtu_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_ecpri_mac_destination_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_show_oran_ecpri_info_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_ecpri_vlan_control_enable_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_ecpri_vlan_control_disable_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_ecpri_vlan_id_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_oran_port_trunk_allowed_vlan_add_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_show_interface_brief_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_show_interface_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_ip_address_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_no_ip_address_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_dhcp_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_no_dhcp_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_iface_show_ip_interface_brief_req(struct cli *cli, oru_general_msg_t* msg);
 
-    time_t now = time(NULL);
-    char time_str[20];
-    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&now));
+int32_t oam_handle_user_show_user_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_user_add_user_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_user_del_user_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_user_change_password_req(struct cli *cli, oru_general_msg_t* msg);
 
-    // fprintf(file, "[%s] %s", time_str, message);
-    fprintf(file, "%s", message);
-    fclose(file);
-}
+int32_t oam_handle_kpi_show_statistics_req(struct cli *cli, oru_general_msg_t* msg);
+int32_t oam_handle_kpi_clear_statistics_req(struct cli *cli, oru_general_msg_t* msg);
 
-// CLI output function
-void cli_out(struct cli *cli, const char *format, ...) {
-    char buffer[BUFFER_SIZE];
-    va_list args;
-    va_start(args, format);
-    vsnprintf(buffer, BUFFER_SIZE, format, args);
-    va_end(args);
-    
-    write(cli->sock, buffer, strlen(buffer) + 1);
-    usleep(1); 
-    // write_to_log(buffer);  // Optional log to file
-}
+int32_t oam_handle_debug_cmd_test_req(struct cli *cli, oru_general_msg_t* msg);
 
-// Dump received data in hexadecimal format
-void dump_data(const char *buffer, size_t length) {
-    printf("Data dump:\n");
-    for (size_t i = 0; i < length; i++) {
-        printf("%02x ", (unsigned char)buffer[i]);
-        if ((i + 1) % 16 == 0) {
-            printf("\n");
-        }
-    }
-    printf("\n");
-} 
-
-#if 0
-
-typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp);
+// request handle
+typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req);
 typedef struct {
     uint16_t func_id;
     ReqParser req_parser;
@@ -182,7 +182,480 @@ static cmd_list_t cmd_list[ORU_MSG_TYPE_NUM][MAX_CMD_NUM] = {
         {ORU_CMD_DEBUG_CMD_TEST, oam_handle_debug_cmd_test_req},
     }
 };
-#endif
+
+// complement function
+void log_error(const char *message) {
+    perror(message);  // Log the error with a description of the problem
+}
+
+bool create_fifo_if_needed(const char *fifo_name) {
+    if (access(fifo_name, F_OK) == -1) {
+        if (mkfifo(fifo_name, 0666) == -1) {
+            log_error("mkfifo failed");
+            return false;
+        }
+    }
+    return true; 
+}
+
+ssize_t read_from_fifo(int fd, char *buffer, size_t size) {
+    ssize_t bytesRead = read(fd, buffer, size);
+    if (bytesRead == -1) {
+        log_error("read failed");
+        return -1;  
+    }
+    return bytesRead;
+}
+
+bool write_to_fifo(int fd, const char *message) {
+    if (write(fd, message, strlen(message) + 1) == -1) {
+        log_error("write failed");
+        return false;
+    }
+    return true;
+}
+
+void write_to_log(const char *message) {
+    FILE *file = fopen(LOG_FILE, "a");
+    if (!file) {
+        log_error("fopen failed");
+        return;
+    }
+
+    time_t now = time(NULL);
+    char time_str[20];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&now));
+
+    // fprintf(file, "[%s] %s", time_str, message);
+    fprintf(file, "%s", message);
+    fclose(file);
+}
+
+// CLI output function
+void cli_out(struct cli *cli, const char *format, ...) {
+    char buffer[BUFFER_SIZE];
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, BUFFER_SIZE, format, args);
+    va_end(args);
+    
+    write(cli->sock, buffer, strlen(buffer) + 1);
+    usleep(1); 
+    // write_to_log(buffer);  // Optional log to file
+}
+
+
+// DISPLAY functions 
+// Dump received data in hexadecimal format
+void dump_data(const char *buffer, size_t length) {
+    printf("Data dump:\n");
+    for (size_t i = 0; i < length; i++) {
+        printf("%02x ", (unsigned char)buffer[i]);
+        if ((i + 1) % 16 == 0) {
+            printf("\n");
+        }
+    }
+    printf("\n");
+} 
+
+void oam_handle_debug_req_info(struct cli *cli, oru_general_msg_t* req)
+{
+    printf("Debug: CLI command: %s\n", cli->cmd);
+    printf("Debug: Request message type: %d\n", req->header.msg_type);
+    printf("Debug: Request function ID: %d\n", req->header.func_id);
+    printf("Debug: Request message size: %d\n", req->header.msg_size);
+
+    cli = cli;
+}
+
+void display_file_content(struct cli* cli, const char *file_path) {
+    FILE *file = fopen(file_path, "r");
+    if (!file) {
+        log_error("Failed to open file");
+        return;  // Just return, don't exit on error
+    }
+
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        cli_out(cli, line);
+        if (errno) {
+            log_error("Failed to send line to CLI");
+            break;  // Stop reading if there's an error sending to CLI
+        }
+    }
+
+    if (ferror(file)) {
+        log_error("Error reading file");
+    }
+
+    fclose(file);
+}
+
+// Implementations of the request handler functions
+int32_t oam_handle_system_show_banner_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_inventory_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_system_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_write_memory_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_hostname_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_no_hostname_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_factory_defaults_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_save_config_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_restore_config_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_login_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_write_default_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_hostname_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_clock_set_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_clock_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_cpuload_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_memory_usage_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_cpuload_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_memory_usage_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_danger_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_high_high_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_high_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_low_temperature_threshold_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_temperature_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_system_software_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_system_image_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_system_show_sysrepo_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_show_ptp_status_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_show_sync_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_mode_ptp_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_mode_synce_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_mode_freerun_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_sync_show_synce_status_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_show_oran_atten_status_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_show_pwr_status_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_show_port_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_power_amp_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_tx_dpd_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_cplane_show_oran_prach_cplane_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_vlan_range_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_vlan_show_all_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_vlan_show_brief_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_show_sfp_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_ecpri_ul_mtu_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_ecpri_mac_destination_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_show_oran_ecpri_info_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_ecpri_vlan_control_enable_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_ecpri_vlan_control_disable_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_ecpri_vlan_id_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_oran_port_trunk_allowed_vlan_add_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_show_interface_brief_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_show_interface_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_ip_address_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_no_ip_address_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_dhcp_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_no_dhcp_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_iface_show_ip_interface_brief_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_user_show_user_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_user_add_user_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_user_del_user_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_user_change_password_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_kpi_show_statistics_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_kpi_clear_statistics_req(struct cli *cli, oru_general_msg_t* msg) {
+    oam_handle_debug_req_info(cli, msg);
+    return 0;
+}
+
+int32_t oam_handle_debug_cmd_test_req(struct cli *cli, oru_general_msg_t *msg)
+{
+    char *replies[] = {
+        "Reply 1 from reader process!\n",
+        "Reply 2 from reader process!\n",
+        "Reply 3 from reader process!\n",
+        "Reply 4 from reader process!\n"
+    };
+
+    oam_handle_debug_req_info(cli, msg);
+
+    // Write multiple replies to FIFO2
+    for (int i = 0; i < REPLY_COUNT; i++)
+    {
+        printf("Sending: %s", replies[i]);
+        if (!write_to_fifo(cli->sock, replies[i]))
+        {
+            return -1;
+        }
+
+        usleep(1000);
+    }
+
+    // Write file content to FIFO2
+    const char *file_path = "/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/usecases/pc805/uc2/du_config_req.json";
+
+    display_file_content(cli, file_path);
+
+    return 0;
+}
+
+// oam_oru_ci_server_handle
+int32_t oam_handle_request(struct cli *cli, oru_general_msg_t* req) {
+    oru_msg_type_e msg_type = req->header.msg_type;
+    if (msg_type >= ORU_MSG_TYPE_NUM) {
+        cli_out(cli, "Error: Invalid msg_type = %d\n", msg_type);
+        return -1;
+    }
+
+    // cli_out(cli, "Handling request for msg_type = %d\n", msg_type);
+
+    uint16_t func_id = req->header.func_id;
+    for (int i = 0; i < MAX_CMD_NUM; i++) {
+        // printf("Checking func_id = %d against cmd_list[%d][%d].func_id = %d\n", func_id, msg_type, i, cmd_list[msg_type][i].func_id);
+        if (func_id == cmd_list[msg_type][i].func_id) {
+            // printf("Found matching func_id = %d, calling req_parser\n", func_id);
+            return cmd_list[msg_type][i].req_parser(cli, req);
+        }
+    }
+
+    cli_out(cli, "Error: Request handler not found for func_id = %d\n", func_id);
+
+    return -1;
+}
 
 // Unpack the request data from the buffer
 bool unpack_data_from_buffer(const char *buffer, const char *key, oru_general_msg_t *req) {
@@ -207,76 +680,39 @@ bool unpack_data_from_buffer(const char *buffer, const char *key, oru_general_ms
     return true;
 }
 
-// Display file content by sending each line to the FIFO
-void display_file_content(int fd2, const char *file_path) {
-    struct cli cli = {0};
-    cli.sock = fd2;
-
-    FILE *file = fopen(file_path, "r");
-    if (!file) {
-        log_error("fopen failed");
-        return;  // Just return, don't exit on error
-    }
-
-    char line[256];
-    while (fgets(line, sizeof(line), file)) {
-        cli_out(&cli, line);
-    }
-    fclose(file);
-}
-
 // Function to handle a request
 bool oam_handle_cli_request(const char *buffer, const char *fifo2, oru_general_msg_t *req) {
-    int fd2;
-    char *replies[] = {
-        "Reply 1 from reader process!\n",
-        "Reply 2 from reader process!\n",
-        "Reply 3 from reader process!\n",
-        "Reply 4 from reader process!\n"
-    };
-    char *endofmessage = "END OF MESSAGE\n";
-    char *cmd = "cmd ";
-    
-    fd2 = open(fifo2, O_WRONLY);
+    int fd2 = open(fifo2, O_WRONLY);
     if (fd2 == -1) {
         log_error("open fifo2 failed");
         return false;
     }
 
-    if (unpack_data_from_buffer(buffer, cmd, req)) {
-        printf("Unpacked data successfully.\n");
-        printf("Msg type: %d\n", req->header.msg_size);
-        printf("Function ID: %d\n", req->header.func_id);
-        printf("Message size: %d\n", req->header.msg_size);
-    } else {
+    if (!unpack_data_from_buffer(buffer, "cmd ", req)) {
         printf("Failed to unpack data.\n");
         close(fd2);
         return false;
     }
 
-    // If it's a debug command, send replies
-    if (req->header.msg_type == ORU_MSG_TYPE_DEBUG && req->header.func_id == ORU_CMD_DEBUG_CMD_TEST) {
-        printf("Received debug command test.\n");
+    printf("Unpacked data successfully.\n");
+    printf("Msg type: %d\n", req->header.msg_type);
+    printf("Function ID: %d\n", req->header.func_id);
+    printf("Message size: %d\n", req->header.msg_size);
 
-        // Write multiple replies to FIFO2
-        for (int i = 0; i < REPLY_COUNT; i++) {
-            printf("Sending: %s", replies[i]);
-            if (!write_to_fifo(fd2, replies[i])) {
-                close(fd2);
-                return false; 
-            }
-            usleep(1000);
-        }
+    struct cli cli = {0};
+    cli.sock = fd2;
 
-        // Write file content to FIFO2
-        const char *file_path = "/home/user/projects/branches/master/pc805-mplane/sources/oam_netconf_1.0.0/usecases/pc805/uc2/du_config_req.json";
-        display_file_content(fd2, file_path);
+    if (oam_handle_request(&cli, req) != 0) {
+        printf("Failed to handle request.\n");
+        close(fd2);
+        return false;
     }
 
     // Write the end of message to FIFO2
-    if (!write_to_fifo(fd2, endofmessage)) {
+    if (!write_to_fifo(fd2, "END OF MESSAGE\n")) {
+        printf("Failed to handle endofmessage.\n");
         close(fd2);
-        return false; 
+        return false;
     }
 
     close(fd2);
@@ -284,20 +720,15 @@ bool oam_handle_cli_request(const char *buffer, const char *fifo2, oru_general_m
 }
 
 int main() {
-    int fd1;
     char buffer[BUFFER_SIZE];
-    
-    // Define FIFO names
-    char *fifo1 = PIPE_NAME;
-    char *fifo2 = PIPE_NAME_RESP;
-    
+
     // Ensure FIFOs exist
-    if (!create_fifo_if_needed(fifo1) || !create_fifo_if_needed(fifo2)) {
+    if (!create_fifo_if_needed(PIPE_NAME) || !create_fifo_if_needed(PIPE_NAME_RESP)) {
         return -1;
     }
 
     // Open FIFO1 for read only
-    fd1 = open(fifo1, O_RDONLY);
+    int fd1 = open(PIPE_NAME, O_RDONLY);
     if (fd1 == -1) {
         log_error("open fifo1 failed");
         return -1;
@@ -305,22 +736,17 @@ int main() {
 
     // Read the message from FIFO1
     ssize_t bytesRead = read_from_fifo(fd1, buffer, sizeof(buffer));
+    close(fd1);
     if (bytesRead == -1) {
-        close(fd1);
         return -1;
     }
 
     printf("Received: %s\n", buffer);
     printf("Number of bytes received: %zd\n", bytesRead);
 
-    close(fd1);
-
     // Initialize request structure
-    char buffer2[BUFFER_SIZE] = {0};
-    oru_general_msg_t *req = (oru_general_msg_t *)&buffer2[0];
-
-    // Call the handle_request function with the read buffer
-    if (!oam_handle_cli_request(buffer, fifo2, req)) {
+    oru_general_msg_t req;
+    if (!oam_handle_cli_request(buffer, PIPE_NAME_RESP, &req)) {
         return -1;  // Return failure if handling the request fails
     }
 

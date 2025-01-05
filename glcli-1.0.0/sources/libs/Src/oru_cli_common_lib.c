@@ -345,78 +345,109 @@ void show_sysrepoctl_list(struct cli* cli)
     pclose(fp);
 }
 
+void display_users_in_table(struct cli* cli, const char *xml_data) {
+
+    char name[50], account_type[50], password[50], enabled[10];
+    const char *start, *end;
+
+    cli_out(cli, "Name       | Account Type | Password      | Enabled\n");
+    cli_out(cli, "-----------|--------------|---------------|--------\n");
+
+    if (xml_data == NULL)
+    {
+        cli_out(cli, "No data found. \n");
+        xml_data = "<users xmlns=\"urn:o-ran:user-mgmt:1.0\">"
+                           "<user>"
+                           "<name>gigalane</name>"
+                           "<account-type>PASSWORD</account-type>"
+                           "<password>gigalane1234</password>"
+                           "<enabled>true</enabled>"
+                           "</user>"
+                           "<user>"
+                           "<name>admin</name>"
+                           "<account-type>PASSWORD</account-type>"
+                           "<password>admin1234</password>"
+                           "<enabled>true</enabled>"
+                           "</user>"
+                           "</users>";
+    }
+
+    start = xml_data;
+    while ((start = strstr(start, "<user>")) != NULL) {
+        start = strstr(start, "<name>") + 6;
+        end = strstr(start, "</name>");
+        if (end == NULL) break;
+        strncpy(name, start, end - start);
+        name[end - start] = '\0';
+
+        start = strstr(start, "<account-type>") + 14;
+        end = strstr(start, "</account-type>");
+        if (end == NULL) break;
+        strncpy(account_type, start, end - start);
+        account_type[end - start] = '\0';
+
+        start = strstr(start, "<password>") + 10;
+        end = strstr(start, "</password>");
+        if (end == NULL) break;
+        strncpy(password, start, end - start);
+        password[end - start] = '\0';
+
+        start = strstr(start, "<enabled>") + 9;
+        end = strstr(start, "</enabled>");
+        if (end == NULL) break;
+        strncpy(enabled, start, end - start);
+        enabled[end - start] = '\0';
+
+        cli_out(cli, "%-10s | %-12s | %-13s | %-6s\n", name, account_type, password, enabled);
+
+        start = end; // Move to the end of the current user entry
+    }
+}
+
 int get_sysrepo_data(const char *xpath, char **result) {
-    sr_conn_ctx_t *connection = NULL;
-    sr_session_ctx_t *session = NULL;
-    sr_data_t *data = NULL;
-    int rc;
+    FILE *fp;
+    char path[1035];
+    size_t result_size = 0;
 
-    if (!xpath || !result) {
-        fprintf(stderr, "Invalid input to get_sysrepo_data\n");
-        return -1; // Invalid input
+    // Command to fetch data from sysrepo
+    char command[256];
+    // snprintf(command, sizeof(command), "sudo sysrepocfg -d running -m %s -X", xpath);
+    snprintf(command, sizeof(command), "sysrepocfg -d running -m %s -X", xpath);
+
+    // Command string for debugging
+    printf("Command: %s\n", command);
+
+    // Open the command for reading
+    fp = popen(command, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Failed to run command: %s\n", command);
+        perror("popen");
+        return 1;
     }
 
-    *result = NULL; // Initialize the result to NULL
-
-    // Connect to Sysrepo
-    rc = sr_connect(SR_CONN_DEFAULT, &connection);
-    if (rc != SR_ERR_OK) {
-        fprintf(stderr, "Failed to connect to Sysrepo: %s\n", sr_strerror(rc));
-        return rc;
+    // Read the output a line at a time and append to result
+    *result = NULL;
+    while (fgets(path, sizeof(path), fp) != NULL) {
+        size_t len = strlen(path);
+        char *new_result = realloc(*result, result_size + len + 1);
+        if (new_result == NULL) {
+            fprintf(stderr, "Memory allocation error\n");
+            free(*result);
+            pclose(fp);
+            return 1;
+        }
+        *result = new_result;
+        strcpy(*result + result_size, path);
+        result_size += len;
     }
 
-    // Start a session
-    rc = sr_session_start(connection, SR_DS_RUNNING, &session);
-    if (rc != SR_ERR_OK) {
-        fprintf(stderr, "Failed to start session: %s\n", sr_strerror(rc));
-        sr_disconnect(connection);
-        return rc;
-    }
-
-    // Retrieve data
-    rc = sr_get_data(session, xpath, 0, 0, 0, &data);
-    if (rc != SR_ERR_OK || !data || !data->tree) {
-        fprintf(stderr, "Failed to retrieve data for XPath '%s': %s\n", xpath, sr_strerror(rc));
-        if (data) sr_release_data(data); // Clean up partially allocated resources
-        sr_session_stop(session);
-        sr_disconnect(connection);
-        return rc;
-    }
-
-    // Serialize the data into XML format
-    char *xml_str = NULL;
-    rc = lyd_print_mem(&xml_str, data->tree, LYD_XML, LYD_PRINT_WITHSIBLINGS);
-    if (rc != 0 || !xml_str) {
-        fprintf(stderr, "Failed to serialize data\n");
-        sr_release_data(data);
-        sr_session_stop(session);
-        sr_disconnect(connection);
-        return rc;
-    }
-
-    // Assign the serialized data to the result
-    *result = strdup(xml_str); // Copy the XML string to the result
-    if (!*result) {
-        fprintf(stderr, "Memory allocation failed\n");
-        free(xml_str);
-        sr_release_data(data);
-        sr_session_stop(session);
-        sr_disconnect(connection);
-        return -1; // Memory allocation failure
-    }
-
-    // Clean up
-    free(xml_str);
-    sr_release_data(data);
-    sr_session_stop(session);
-    sr_disconnect(connection);
-
-    return 0; // Success
+    // Close the command
+    pclose(fp);
+    return 0;
 }
 
-void display_sysrepo_version(struct cli *cli)
-{
-    const char *xpath = "/sysrepo:sysrepo-version";
+int show_sysrepoctl_user_accout(struct cli *cli) {
+    const char *xpath = "o-ran-usermgmt";
     char *result = NULL;
 
     cli_out(cli, "Fetching data for XPath '%s'...\n", xpath);
@@ -425,98 +456,9 @@ void display_sysrepo_version(struct cli *cli)
     if (rc != 0) {
         fprintf(stderr, "Failed to fetch data for XPath '%s'.\n", xpath);
     } else {
-        cli_out(cli, "Retrieved data:\n%s\n", result);
-        printf("Retrieved data:\n%s\n", result);
+        display_users_in_table(cli, result);
         free(result); // Free the result buffer
     }
+
+    return rc;
 }
-
-
-void print_sysrepo_data(struct cli *cli)
-{
-    const char *xpath = "/picocom-oru-state:*";
-    char *result = NULL;
-
-    cli_out(cli, "Fetching data for XPath '%s'...\n", xpath);
-
-    int rc = get_sysrepo_data(xpath, &result);
-    if (rc != 0) {
-        fprintf(stderr, "Failed to fetch data for XPath '%s'.\n", xpath);
-    } else {
-        cli_out(cli, "Retrieved data:\n%s\n", result);
-        printf("Retrieved data:\n%s\n", result);
-        free(result); // Free the result buffer
-    }
-}
-
-// #include <libxml/parser.h>
-// #include <libxml/tree.h>
-// #include <stdio.h>
-
-// void display_slot_info(const char *xml_data) {
-//     xmlDocPtr doc;
-//     xmlNodePtr root, software_slot_info, active_slot_node, running_slot_node;
-    
-//     // Parse the XML data
-//     doc = xmlParseMemory(xml_data, strlen(xml_data));
-//     if (doc == NULL) {
-//         fprintf(stderr, "Error: unable to parse the XML data.\n");
-//         return;
-//     }
-
-//     // Get the root element
-//     root = xmlDocGetRootElement(doc);
-    
-//     // Find the <software-slot-info> node
-//     software_slot_info = NULL;
-//     for (xmlNodePtr cur = root; cur != NULL; cur = cur->next) {
-//         if (cur->type == XML_ELEMENT_NODE && strcmp((char*)cur->name, "software-slot-info") == 0) {
-//             software_slot_info = cur;
-//             break;
-//         }
-//     }
-
-//     if (software_slot_info == NULL) {
-//         fprintf(stderr, "Error: <software-slot-info> not found in XML.\n");
-//         xmlFreeDoc(doc);
-//         return;
-//     }
-
-//     // Find the <active_slot> and <running_slot> nodes
-//     active_slot_node = NULL;
-//     running_slot_node = NULL;
-    
-//     for (xmlNodePtr cur = software_slot_info->children; cur != NULL; cur = cur->next) {
-//         if (cur->type == XML_ELEMENT_NODE) {
-//             if (strcmp((char*)cur->name, "active_slot") == 0) {
-//                 active_slot_node = cur;
-//             }
-//             if (strcmp((char*)cur->name, "running_slot") == 0) {
-//                 running_slot_node = cur;
-//             }
-//         }
-//     }
-
-//     if (active_slot_node == NULL || running_slot_node == NULL) {
-//         fprintf(stderr, "Error: <active_slot> or <running_slot> not found in XML.\n");
-//         xmlFreeDoc(doc);
-//         return;
-//     }
-
-//     // Extract the values of the active_slot and running_slot
-//     char *active_slot = (char*)xmlNodeGetContent(active_slot_node);
-//     char *running_slot = (char*)xmlNodeGetContent(running_slot_node);
-
-//     // Display the information in a table format
-//     printf("+-----------------+------------------+\n");
-//     printf("| Field           | Value            |\n");
-//     printf("+-----------------+------------------+\n");
-//     printf("| Active Slot     | %-16s |\n", active_slot);
-//     printf("| Running Slot    | %-16s |\n", running_slot);
-//     printf("+-----------------+------------------+\n");
-
-//     // Free allocated memory
-//     xmlFree(active_slot);
-//     xmlFree(running_slot);
-//     xmlFreeDoc(doc);
-// }

@@ -2109,8 +2109,9 @@ int32_t handle_user_show_user_req(struct cli* cli, oru_general_msg_t* req, oru_g
 
 void handle_user_show_user_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
-    cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
+    // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
 
+    show_sysrepoctl_user_accout(cli);
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
@@ -2255,15 +2256,8 @@ int32_t handle_debug_cmd_test_req(struct cli* cli, oru_general_msg_t* req, oru_g
     resp->header.msg_type = req->header.msg_type;
     resp->header.func_id = req->header.func_id;
 
-#if 1 // TEST handle req to oam api
-    // OAM_PIPE_LOCK
-    // handle_req_to_oam(cli, req);
-    // OAM_PIPE_UNLOCK
-#endif
-
     printf("%s: %s\n", __func__, cli->cmd);
-
-    return 0;
+    return handle_req_to_oam(cli, req);
 }
 
 void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg) {
@@ -2275,7 +2269,7 @@ void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg) {
     // display_sysrepoctl_list(cli);
     printf("%s: %s\n", __func__, cli->cmd);
 
-    show_sysrepoctl_list(cli);
+    // show_sysrepoctl_list(cli);
 
     printf("%s: %s\n", __func__, cli->cmd);
 }

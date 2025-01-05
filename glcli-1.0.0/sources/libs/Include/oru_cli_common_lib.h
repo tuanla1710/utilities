@@ -30,5 +30,6 @@ int update_dhcp(const char *iface, int enable);
 
 /* sysrepoi db handle*/
 void show_sysrepoctl_list(struct cli* cli);
+int show_sysrepoctl_user_accout(struct cli *cli);
 
 #endif // ORU_CLI_COMMON_LIB_H
