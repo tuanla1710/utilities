@@ -25,11 +25,6 @@
 #define PIPE_NAME "/tmp/oam_pipe"
 #define PIPE_NAME_RESP "/tmp/oam_pipe_resp"
 
-// Decclare the mutex with OAM_PIPE_LOCK and OAM_PIPE_UNLOCK
-extern pthread_mutex_t oam_pipe_mutex;
-#define OAM_PIPE_LOCK pthread_mutex_lock(&oam_pipe_mutex);
-#define OAM_PIPE_UNLOCK pthread_mutex_unlock(&oam_pipe_mutex);
-
 // Structure to hold the command and socket information
 struct cli {
     int mode;

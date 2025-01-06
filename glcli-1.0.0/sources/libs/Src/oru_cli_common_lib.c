@@ -115,41 +115,28 @@ int remove_ip_address(const char *iface, const char *ip, int mask)
     return 0;
 }
 
+#define MAX_LINE_LENGTH 256
+void print_table_header(struct cli *cli) {
+    cli_out(cli, "| %-8s | %-4s | %-15s | %-17s | %-5s |\n", "ifname", "state", "ipv4 addr", "mac", "mtu");
+    cli_out(cli, "|%-10s|%-6s|%-17s|%-19s|%-7s|\n", "----------", "------", "-----------------", "-------------------", "-----");
+}
+
+void print_table_row(struct cli *cli, const char *ifname, const char *state, const char *ipv4, const char *mac, const char *mtu) {
+    cli_out(cli, "| %-8s | %-4s | %-15s | %-17s | %-5s |\n", ifname, state, ipv4, mac, mtu);
+}
+
 void show_ip_interface_brief(struct cli *cli) {
-    FILE *fp;
+    FILE* fp;
     char path[1035];
 
-    // Open the command for reading IP addresses
-    fp = popen("ip -br addr", "r");
+    // Open the command for reading
+    fp = popen("ip addr", "r");
     if (fp == NULL) {
-        printf("Failed to run command\n");
-        return;
+        cli_out(cli, "Failed to run command\n");
+        exit(1);
     }
 
-    cli_out(cli, "Interface Summary:\n");
-    cli_out(cli, "Name\t\tStatus\t\tIP Address\n");
-    cli_out(cli, "-------------------------------------------------\n");
-
-    // Read the output a line at a time and print it
-    while (fgets(path, sizeof(path), fp) != NULL) {
-        cli_out(cli, "%s", path);
-    }
-
-    // Close the file pointer
-    pclose(fp);
-
-    // Open the command for reading MAC addresses
-    fp = popen("ip -br link", "r");
-    if (fp == NULL) {
-        printf("Failed to run command\n");
-        return;
-    }
-
-    cli_out(cli, "\nMAC Address Summary:\n");
-    cli_out(cli, "Name\t\tMAC Address\n");
-    cli_out(cli, "-------------------------------------------------\n");
-
-    // Read the output a line at a time and print it
+    // Read the output a line at a time - output it
     while (fgets(path, sizeof(path), fp) != NULL) {
         cli_out(cli, "%s", path);
     }

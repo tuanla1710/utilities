@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <stdio.h>
+#include <errno.h>
 
 // Constants
 #define BUFFER_SIZE 4096
@@ -217,7 +219,7 @@ void print_and_clear_log(const char *log_file) {
     FILE *file = fopen(log_file, "r");
     if (file == NULL) {
         perror("fopen");
-        exit(EXIT_FAILURE);
+        return;
     }
 
     // Print all lines in the file
@@ -231,9 +233,33 @@ void print_and_clear_log(const char *log_file) {
     file = fopen(log_file, "w");
     if (file == NULL) {
         perror("fopen");
-        exit(EXIT_FAILURE);
+        return;
     }
     fclose(file);
+}
+
+void check_and_create_file(const char *file_path)
+{
+    FILE *file = fopen(file_path, "r");
+    if (file == NULL)
+    {
+        if (errno == ENOENT)
+        {
+            // File does not exist, create it
+            file = fopen(file_path, "w");
+            if (file == NULL)
+            {
+                perror("fopen");
+                return;
+            }
+            fclose(file);
+        }
+        else
+        {
+            perror("fopen");
+            return;
+        }
+    }
 }
 
 void send_command(struct cli *cli) {
@@ -319,6 +345,8 @@ int main(int argc, char *argv[]) {
     
     memset(&cli, 0, sizeof(struct cli));
 
+    check_and_create_file("/tmp/cli_out.txt");
+
     // Get the hostname
     if (gethostname(hostname, sizeof(hostname)) != 0) {
         perror("gethostname");
@@ -368,7 +396,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cli.cmd, "exit") == 0) {
             printf("Exiting...\n");
             break;
-        } else if (strcmp(cli.cmd, "help") == 0 || strcmp(cli.cmd, "?") == 0) {
+        } else if (strcmp(cli.cmd, "help") == 0 || strcmp(cli.cmd, "?") == 0 || strcmp(cli.cmd, "ls") == 0) {
             print_help(g_mode);
         } else if (strlen(cli.cmd) == 0) {
             // Ignore empty command

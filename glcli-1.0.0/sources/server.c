@@ -25,7 +25,7 @@ int forward_req_to_oam(struct cli* cli, oru_general_msg_t* req) {
     int fd1, fd2;
     char buffer[BUFFER_SIZE] = {0};
     char buffer2[BUFFER_SIZE] = {0};
-    const char *cmd = "cmd ";
+    const char *cmd = "CLI_REQ ";
 
     if (access(PIPE_NAME, F_OK) == -1 && mkfifo(PIPE_NAME, 0666) == -1) {
         perror("mkfifo fifo1");

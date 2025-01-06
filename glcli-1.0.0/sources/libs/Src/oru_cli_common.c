@@ -31,7 +31,7 @@ void write_to_log(const char *log_file, const char *message) {
     FILE *file = fopen(log_file, "a");
     if (file == NULL) {
         perror("fopen");
-        exit(EXIT_FAILURE);
+        return;
     }
 
     // Get the current time
