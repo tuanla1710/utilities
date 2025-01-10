@@ -663,9 +663,13 @@ bool unpack_data_from_buffer(const char *buffer, const char *key, oru_general_ms
         return false;
     }
 
+//    printf("buffer = %s\n", buffer);
+ //   printf("key=%send\n", key);
+
     uint16_t cmd_len = strlen(key);
     if (strncmp(buffer, key, cmd_len) != 0) {
-        return false;
+	    printf("keynotmatch\n");
+	    return false;
     }
 
     const char *req_data = buffer + cmd_len;
