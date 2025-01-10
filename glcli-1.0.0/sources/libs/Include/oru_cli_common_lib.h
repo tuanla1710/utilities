@@ -32,4 +32,8 @@ int update_dhcp(const char *iface, int enable);
 void show_sysrepoctl_list(struct cli* cli);
 int show_sysrepoctl_user_accout(struct cli *cli);
 
+/* show mplane interface and vlan info*/
+void show_vlan_mplane_info(struct cli *cli);
+void show_iface_mplane_info(struct cli *cli);
+
 #endif // ORU_CLI_COMMON_LIB_H

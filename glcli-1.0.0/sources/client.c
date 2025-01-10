@@ -229,13 +229,13 @@ void print_and_clear_log(const char *log_file) {
     }
     fclose(file);
 
-    // Clear all content in the file
-    file = fopen(log_file, "w");
-    if (file == NULL) {
-        perror("fopen");
-        return;
-    }
-    fclose(file);
+    // // Clear all content in the file
+    // file = fopen(log_file, "w");
+    // if (file == NULL) {
+    //     perror("fopen");
+    //     return;
+    // }
+    // fclose(file);
 }
 
 void check_and_create_file(const char *file_path)
@@ -345,7 +345,7 @@ int main(int argc, char *argv[]) {
     
     memset(&cli, 0, sizeof(struct cli));
 
-    check_and_create_file("/tmp/cli_out.txt");
+    // check_and_create_file("/tmp/cli_out.txt");
 
     // Get the hostname
     if (gethostname(hostname, sizeof(hostname)) != 0) {

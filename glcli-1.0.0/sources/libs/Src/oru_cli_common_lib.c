@@ -22,6 +22,11 @@
 #include "oru_cli_common.h"
 #include "oru_cli_common_lib.h"
 
+// show mplane info
+#define MAX_LINE_LENGTH 256
+#define MAX_TABLE_ROWS 50
+
+
 int validate_and_convert_iface(char *iface) {
     // Check if the interface is valid
     if (strcmp(iface, "mgmt") != 0 && strcmp(iface, "eth0") != 0 && strcmp(iface, "enp0s3") != 0) {
@@ -437,7 +442,7 @@ int show_sysrepoctl_user_accout(struct cli *cli) {
     const char *xpath = "o-ran-usermgmt";
     char *result = NULL;
 
-    cli_out(cli, "Fetching data for XPath '%s'...\n", xpath);
+    // cli_out(cli, "Fetching data for XPath '%s'...\n", xpath);
 
     int rc = get_sysrepo_data(xpath, &result);
     if (rc != 0) {
@@ -448,4 +453,213 @@ int show_sysrepoctl_user_accout(struct cli *cli) {
     }
 
     return rc;
+}
+
+// get mplane interface info and vlan info
+// Placeholder for TableRow structure
+typedef struct {
+    char key[MAX_LINE_LENGTH];
+    char value[MAX_LINE_LENGTH];
+} TableRow;
+
+// Function to extract value from XML-like tags
+void extract_value(const char *line, const char *tag, char *output) {
+    char open_tag[MAX_LINE_LENGTH], close_tag[MAX_LINE_LENGTH];
+    snprintf(open_tag, sizeof(open_tag), "<%s>", tag);
+    snprintf(close_tag, sizeof(close_tag), "</%s>", tag);
+
+    char *start = strstr(line, open_tag);
+    if (start) {
+        start += strlen(open_tag);
+        char *end = strstr(start, close_tag);
+        if (end) {
+            strncpy(output, start, end - start);
+            output[end - start] = '\0';
+        }
+    }
+}
+
+// Function to parse M-plane interface data
+void oru_iface_mplane_parse_file(const char *file_path, TableRow *table, int *row_count) {
+    FILE *file = fopen(file_path, "r");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[MAX_LINE_LENGTH];
+    *row_count = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        char value[MAX_LINE_LENGTH] = {0};
+
+        // Parse the tags and fill the table rows
+        if (strstr(line, "<searchable-access-vlans>")) {
+            extract_value(line, "searchable-access-vlans", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Searchable VLAN");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<lowest-vlan-id>")) {
+            extract_value(line, "lowest-vlan-id", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Lowest VLAN ID");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<highest-vlan-id>")) {
+            extract_value(line, "highest-vlan-id", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Highest VLAN ID");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<scan-interval>")) {
+            extract_value(line, "scan-interval", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Scan Interval");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+    }
+
+    fclose(file);
+}
+
+// Function to parse VLAN M-plane data
+void oru_vlan_mplane_parse_file(const char *file_path, TableRow *table, int *row_count) {
+    FILE *file = fopen(file_path, "r");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[MAX_LINE_LENGTH];
+    *row_count = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        char value[MAX_LINE_LENGTH] = {0};
+
+        if (strstr(line, "<searchable-access-vlans>")) {
+            extract_value(line, "searchable-access-vlans", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Searchable VLAN");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<lowest-vlan-id>")) {
+            extract_value(line, "lowest-vlan-id", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Lowest VLAN ID");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<highest-vlan-id>")) {
+            extract_value(line, "highest-vlan-id", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Highest VLAN ID");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+
+        if (strstr(line, "<scan-interval>")) {
+            extract_value(line, "scan-interval", value);
+            snprintf(table[*row_count].key, sizeof(table[*row_count].key), "Scan Interval");
+            strcpy(table[*row_count].value, value);
+            (*row_count)++;
+        }
+    }
+
+    fclose(file);
+}
+
+// Function to print table data
+void print_table(struct cli *cli, TableRow *table, int row_count) {
+    cli_out(cli, "%-25s | %-15s\n", "Parameter", "Value");
+    printf("--------------------------------------------\n");
+    for (int i = 0; i < row_count; i++) {
+        cli_out(cli, "%-25s | %-15s\n", table[i].key, table[i].value);
+    }
+}
+
+// Function to fetch M-plane data
+int fetch_mplane_data(const char* module_name, const char* tmpfile) {
+    char command[256];
+    FILE* fp;
+    char buffer[256];
+
+    // Build the command string
+    snprintf(command, sizeof(command),
+             "sudo sysrepocfg --export=%s -d startup -m %s -e report-all",
+             tmpfile, module_name);
+
+    // Open the command for reading
+    fp = popen(command, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Error: Failed to run command: %s\n", command);
+        perror("popen");
+        return 1;  // Command execution failed
+    }
+
+    // Read the command output into the temporary file
+    FILE* temp_fp = fopen(tmpfile, "w");
+    if (!temp_fp) {
+        perror("Error opening temporary file");
+        pclose(fp);
+        return 2;  // Failed to open temp file for writing
+    }
+
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        fputs(buffer, temp_fp);
+    }
+
+    fclose(temp_fp);
+    pclose(fp);
+    
+    return 0;  // Success
+}
+
+// Function to show interface M-plane information
+void show_iface_mplane_info(struct cli *cli)
+{
+    const char *tmpfile = "/tmp/mplane_int_info_tmp.XXXXXX"; // Temporary file
+    int status = fetch_mplane_data("o-ran-mplane-int", tmpfile);
+    if (status != 0) {
+        fprintf(stderr, "Error: Failed to fetch M-plane interface data (status: %d)\n", status);
+        return;
+    }
+
+    TableRow table[MAX_TABLE_ROWS];
+    int row_count = 0;
+
+    // Parse the M-plane data
+    oru_iface_mplane_parse_file(tmpfile, table, &row_count);
+    print_table(cli, table, row_count);
+
+    // Delete the temporary file
+    if (remove(tmpfile) != 0) {
+        perror("Error: Failed to delete temporary file");
+    }
+}
+
+// Function to show VLAN M-plane information
+void show_vlan_mplane_info(struct cli *cli)
+{
+    const char *tmpfile = "/tmp/mplane_int_info_tmp.XXXXXX"; // Temporary file
+    int status = fetch_mplane_data("o-ran-mplane-int", tmpfile);
+    if (status != 0) {
+        fprintf(stderr, "Error: Failed to fetch VLAN M-plane data (status: %d)\n", status);
+        return;
+    }
+
+    TableRow table[MAX_TABLE_ROWS];
+    int row_count = 0;
+
+    // Parse the VLAN M-plane data
+    oru_vlan_mplane_parse_file(tmpfile, table, &row_count);
+    print_table(cli, table, row_count);
+
+    // Delete the temporary file
+    if (remove(tmpfile) != 0) {
+        perror("Error: Failed to delete temporary file");
+    }
 }

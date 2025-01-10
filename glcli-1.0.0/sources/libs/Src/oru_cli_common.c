@@ -58,6 +58,28 @@ void cli_out(struct cli *cli, const char *format, ...) {
     // send(cli->sock, buffer, strlen(buffer), 0);
 }
 
+// lookup maximum function id value by each msg type
+typedef struct{
+    uint16_t func_id;
+    uint16_t max_func_id;
+} max_func_id_t;
+
+static max_func_id_t max_func_id[ORU_MSG_TYPE_NUM] = {
+    {ORU_MSG_TYPE_SYSTEM, ORU_CMD_SYSTEM_NUM},
+    {ORU_MSG_TYPE_SYNC, ORU_CMD_SYNC_NUM},
+    {ORU_MSG_TYPE_CPLANE, ORU_CMD_CPLANE_NUM},
+    {ORU_MSG_TYPE_VLAN, ORU_CMD_VLAN_NUM},
+    {ORU_MSG_TYPE_IFACE, ORU_CMD_IFACE_NUM},
+    {ORU_MSG_TYPE_USER, ORU_CMD_USER_NUM},
+    {ORU_MSG_TYPE_KPI, ORU_CMD_KPI_NUM},
+    {ORU_MSG_TYPE_DEBUG, ORU_CMD_DEBUG_NUM}
+};
+
+uint16_t get_max_func_id(oru_msg_type_e msg_type)
+{
+    return max_func_id[msg_type].max_func_id;
+}
+
 typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp);
 typedef int32_t (*CmdParser)(struct cli *cli, oru_general_msg_t* msg);
 typedef void (*RespParser)(struct cli *cli, oru_general_msg_t* msg);
@@ -294,14 +316,22 @@ int32_t  handle_response(struct cli *cli, uint16_t func_id, oru_general_msg_t* m
 // Server handle
 int32_t handle_request(struct cli *cli, oru_general_msg_t* req, oru_general_msg_t* resp) {
     oru_msg_type_e msg_type = req->header.msg_type;
-    if (msg_type >= ORU_MSG_TYPE_NUM) {
+    uint16_t func_id = req->header.func_id;
+
+    // check if msg_type is valid
+    if (msg_type >= ORU_MSG_TYPE_NUM || !msg_type)
+    {
         cli_out(cli, "Error: Invalid msg_type = %d\n", msg_type);
         return -1;
     }
 
-    // cli_out(cli, "Handling request for msg_type = %d\n", msg_type);
+    // check if func_id is valid
+    if (func_id >= get_max_func_id(msg_type) || !req->header.func_id)
+    {
+        cli_out(cli, "Error: Invalid func_id = %d\n", req->header.func_id);
+        return -1;
+    }
 
-    uint16_t func_id = req->header.func_id;
     for (int i = 0; i < MAX_CMD_NUM; i++) {
         // printf("Checking func_id = %d against cmd_list[%d][%d].func_id = %d\n", func_id, msg_type, i, cmd_list[msg_type][i].func_id);
         if (func_id == cmd_list[msg_type][i].func_id) {
@@ -1293,6 +1323,8 @@ int32_t handle_vlan_show_all_req(struct cli* cli, oru_general_msg_t* req, oru_ge
 
 void handle_vlan_show_all_resp(struct cli *cli, oru_general_msg_t* msg) {
     msg = msg;
+
+    show_vlan_mplane_info(cli);
     // cli_out(cli, "Error - Not supported: %s, id = %d\n", cli->cmd, msg->header.func_id);
     printf("%s: %s\n", __func__, cli->cmd);
 }
@@ -1607,18 +1639,23 @@ int32_t handle_iface_show_interface_req(struct cli* cli, oru_general_msg_t* req,
     return 0;
 }
 
-void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t* msg) {
+void handle_iface_show_interface_resp(struct cli *cli, oru_general_msg_t *msg)
+{
+
     cli = cli;
     msg = msg;
 
+    char output[MAX_CMD_OUTPUT_LEN] = {0};
     oru_iface_show_interface_req_t *resp = (oru_iface_show_interface_req_t *)&msg->body.param_value[0];
     printf("Interface name: %s\n", resp->ifacename);
 
-    char output[MAX_CMD_OUTPUT_LEN];
-    if (show_interface_info(resp->ifacename, output, sizeof(output))) {
-        cli_out(cli, "%s", output);
-    } else {
-        cli_out(cli, "Failed to get interface info\n");
+    if (strcmp(resp->ifacename, "mplane") == 0)
+    {
+        show_iface_mplane_info(cli);
+    }
+    else
+    {
+        show_interface_info(resp->ifacename, output, sizeof(output));
     }
 
     printf("%s: %s\n", __func__, cli->cmd);
@@ -2274,6 +2311,22 @@ void handle_debug_cmd_test_resp(struct cli *cli, oru_general_msg_t* msg) {
     printf("%s: %s\n", __func__, cli->cmd);
 }
 
+void clear_log(const char *log_file)
+{
+    FILE *file = fopen(log_file, "r");
+    if (file == NULL) {
+        perror("fopen");
+        return;
+    }
+
+    // Clear all content in the file
+    file = fopen(log_file, "w");
+    if (file == NULL) {
+        perror("fopen");
+        return;
+    }
+    fclose(file);
+}
 
 // Command processing
 int32_t command_process(struct cli* cli) {
@@ -2283,6 +2336,8 @@ int32_t command_process(struct cli* cli) {
 
     oru_general_msg_t* req = (oru_general_msg_t*)&req_buffer[0];
     oru_general_msg_t* resp = (oru_general_msg_t*)&resp_buffer[0];
+
+    clear_log(log_file);
 
     uint16_t func_id = get_function_code(cli->mode, cli->cmd);
     if (func_id >= MAX_CMD_NUM + 1) {
