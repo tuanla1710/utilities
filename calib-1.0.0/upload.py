@@ -7,7 +7,7 @@ import logging
 
 # Define server and login details
 hostname = "192.168.150.3"
-port = 3100
+port = 3200
 username = "user"
 password = "user"  # Update this with the actual password
 
