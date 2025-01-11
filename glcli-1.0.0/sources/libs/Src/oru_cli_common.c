@@ -60,11 +60,11 @@ void cli_out(struct cli *cli, const char *format, ...) {
 
 // lookup maximum function id value by each msg type
 typedef struct{
-    uint16_t func_id;
+    uint16_t msg_type;
     uint16_t max_func_id;
 } max_func_id_t;
 
-static max_func_id_t max_func_id[ORU_MSG_TYPE_NUM] = {
+static max_func_id_t max_func_id_lookup[ORU_MSG_TYPE_NUM] = {
     {ORU_MSG_TYPE_SYSTEM, ORU_CMD_SYSTEM_NUM},
     {ORU_MSG_TYPE_SYNC, ORU_CMD_SYNC_NUM},
     {ORU_MSG_TYPE_CPLANE, ORU_CMD_CPLANE_NUM},
@@ -77,7 +77,7 @@ static max_func_id_t max_func_id[ORU_MSG_TYPE_NUM] = {
 
 uint16_t get_max_func_id(oru_msg_type_e msg_type)
 {
-    return max_func_id[msg_type].max_func_id;
+    return max_func_id_lookup[msg_type-1].max_func_id;
 }
 
 typedef int32_t (*ReqParser)(struct cli* cli, oru_general_msg_t* req, oru_general_msg_t* resp);
@@ -326,8 +326,9 @@ int32_t handle_request(struct cli *cli, oru_general_msg_t* req, oru_general_msg_
     }
 
     // check if func_id is valid
-    if (func_id >= get_max_func_id(msg_type) || !req->header.func_id)
+    if (func_id >= get_max_func_id(msg_type) || req->header.func_id == 0)
     {
+        cli_out(cli, "Msg_type = %d\n, max_func_id = %d", msg_type, get_max_func_id(msg_type));
         cli_out(cli, "Error: Invalid func_id = %d\n", req->header.func_id);
         return -1;
     }

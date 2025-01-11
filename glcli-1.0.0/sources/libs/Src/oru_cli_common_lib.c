@@ -19,6 +19,7 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 
+#include "mxml.h"
 #include "oru_cli_common.h"
 #include "oru_cli_common_lib.h"
 
@@ -26,10 +27,18 @@
 #define MAX_LINE_LENGTH 256
 #define MAX_TABLE_ROWS 50
 
+// local data structure
+typedef struct {
+    char name[50];
+    char account_type[50];
+    char password[50];
+    int enabled;
+} user_account_t;
+
 
 int validate_and_convert_iface(char *iface) {
     // Check if the interface is valid
-    if (strcmp(iface, "mgmt") != 0 && strcmp(iface, "eth0") != 0 && strcmp(iface, "enp0s3") != 0) {
+    if (strcmp(iface, "mgmt") != 0 && strcmp(iface, "eth0") != 0 && strcmp(iface, "enp0s3") != 0 && strcmp(iface, "mplane") != 0) {
         printf("Error - Invalid interface: %s\n", iface);
         return -1; // Error
     }
@@ -337,13 +346,10 @@ void show_sysrepoctl_list(struct cli* cli)
     pclose(fp);
 }
 
-void display_users_in_table(struct cli* cli, const char *xml_data) {
-
-    char name[50], account_type[50], password[50], enabled[10];
-    const char *start, *end;
-
-    cli_out(cli, "Name       | Account Type | Password      | Enabled\n");
-    cli_out(cli, "-----------|--------------|---------------|--------\n");
+void create_user_account_table(struct cli* cli, const char *xml_data) {
+    mxml_node_t *tree, *node, *user;
+    user_account_t users[10];
+    int user_count = 0;
 
     if (xml_data == NULL)
     {
@@ -364,38 +370,45 @@ void display_users_in_table(struct cli* cli, const char *xml_data) {
                            "</users>";
     }
 
-    start = xml_data;
-    while ((start = strstr(start, "<user>")) != NULL) {
-        start = strstr(start, "<name>") + 6;
-        end = strstr(start, "</name>");
-        if (end == NULL) break;
-        strncpy(name, start, end - start);
-        name[end - start] = '\0';
+    // Parse the XML data
+    tree = mxmlLoadString(NULL, xml_data, MXML_OPAQUE_CALLBACK);
 
-        start = strstr(start, "<account-type>") + 14;
-        end = strstr(start, "</account-type>");
-        if (end == NULL) break;
-        strncpy(account_type, start, end - start);
-        account_type[end - start] = '\0';
+    // Find the first user node
+    node = mxmlFindElement(tree, tree, "user", NULL, NULL, MXML_DESCEND);
 
-        start = strstr(start, "<password>") + 10;
-        end = strstr(start, "</password>");
-        if (end == NULL) break;
-        strncpy(password, start, end - start);
-        password[end - start] = '\0';
+    // Iterate through all user nodes
+    while (node != NULL && user_count < 10) {
+        user = node;
 
-        start = strstr(start, "<enabled>") + 9;
-        end = strstr(start, "</enabled>");
-        if (end == NULL) break;
-        strncpy(enabled, start, end - start);
-        enabled[end - start] = '\0';
+        // Extract user information
+        mxml_node_t *name_node = mxmlFindElement(user, user, "name", NULL, NULL, MXML_DESCEND);
+        mxml_node_t *account_type_node = mxmlFindElement(user, user, "account-type", NULL, NULL, MXML_DESCEND);
+        mxml_node_t *password_node = mxmlFindElement(user, user, "password", NULL, NULL, MXML_DESCEND);
+        mxml_node_t *enabled_node = mxmlFindElement(user, user, "enabled", NULL, NULL, MXML_DESCEND);
 
-        cli_out(cli, "%-10s | %-12s | %-13s | %-6s\n", name, account_type, password, enabled);
+        if (name_node && account_type_node && password_node && enabled_node) {
+            strncpy(users[user_count].name, mxmlGetOpaque(name_node), sizeof(users[user_count].name) - 1);
+            strncpy(users[user_count].account_type, mxmlGetOpaque(account_type_node), sizeof(users[user_count].account_type) - 1);
+            strncpy(users[user_count].password, mxmlGetOpaque(password_node), sizeof(users[user_count].password) - 1);
+            users[user_count].enabled = strcmp(mxmlGetOpaque(enabled_node), "true") == 0 ? 1 : 0;
+            user_count++;
+        }
 
-        start = end; // Move to the end of the current user entry
+        // Find the next user node
+        node = mxmlFindElement(node, tree, "user", NULL, NULL, MXML_DESCEND);
     }
 
-    test_user();
+    cli_out(cli, "Name       | Account Type | Password      | Enabled\n");
+    cli_out(cli, "-----------|--------------|---------------|--------\n");
+
+    // Print the user-account table
+    for (int i = 0; i < user_count; i++)
+    {
+        cli_out(cli, "%-10s | %-12s | %-13s | %d\n", users[i].name, users[i].account_type, users[i].password, users[i].enabled);
+    }
+
+    // Free the XML tree
+    mxmlDelete(tree);
 }
 
 int get_sysrepo_data(const char *xpath, char **result) {
@@ -405,7 +418,6 @@ int get_sysrepo_data(const char *xpath, char **result) {
 
     // Command to fetch data from sysrepo
     char command[256];
-    // snprintf(command, sizeof(command), "sudo sysrepocfg -d running -m %s -X", xpath);
     snprintf(command, sizeof(command), "sysrepocfg -d running -m %s -X", xpath);
 
     // Command string for debugging
@@ -450,7 +462,7 @@ int show_sysrepoctl_user_accout(struct cli *cli) {
     if (rc != 0) {
         fprintf(stderr, "Failed to fetch data for XPath '%s'.\n", xpath);
     } else {
-        display_users_in_table(cli, result);
+        create_user_account_table(cli, result);
         free(result); // Free the result buffer
     }
 
@@ -664,83 +676,4 @@ void show_vlan_mplane_info(struct cli *cli)
     if (remove(tmpfile) != 0) {
         perror("Error: Failed to delete temporary file");
     }
-}
-
-// write a function to test mxml4
-
-/// show user account using mxm4
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "mxml.h"
-
-typedef struct {
-    char name[50];
-    char account_type[50];
-    char password[50];
-    int enabled;
-} user_account_t;
-
-void create_user_account_table(const char *xml_data) {
-    mxml_node_t *tree, *node, *user;
-    user_account_t users[10];
-    int user_count = 0;
-
-    // Parse the XML data
-    tree = mxmlLoadString(NULL, xml_data, MXML_OPAQUE_CALLBACK);
-
-    // Find the first user node
-    node = mxmlFindElement(tree, tree, "user", NULL, NULL, MXML_DESCEND);
-
-    // Iterate through all user nodes
-    while (node != NULL && user_count < 10) {
-        user = node;
-
-        // Extract user information
-        mxml_node_t *name_node = mxmlFindElement(user, user, "name", NULL, NULL, MXML_DESCEND);
-        mxml_node_t *account_type_node = mxmlFindElement(user, user, "account-type", NULL, NULL, MXML_DESCEND);
-        mxml_node_t *password_node = mxmlFindElement(user, user, "password", NULL, NULL, MXML_DESCEND);
-        mxml_node_t *enabled_node = mxmlFindElement(user, user, "enabled", NULL, NULL, MXML_DESCEND);
-
-        if (name_node && account_type_node && password_node && enabled_node) {
-            strncpy(users[user_count].name, mxmlGetOpaque(name_node), sizeof(users[user_count].name) - 1);
-            strncpy(users[user_count].account_type, mxmlGetOpaque(account_type_node), sizeof(users[user_count].account_type) - 1);
-            strncpy(users[user_count].password, mxmlGetOpaque(password_node), sizeof(users[user_count].password) - 1);
-            users[user_count].enabled = strcmp(mxmlGetOpaque(enabled_node), "true") == 0 ? 1 : 0;
-            user_count++;
-        }
-
-        // Find the next user node
-        node = mxmlFindElement(node, tree, "user", NULL, NULL, MXML_DESCEND);
-    }
-
-    // Print the user-account table
-    printf("User-Account Table:\n");
-    printf("Name\t\tAccount Type\tPassword\tEnabled\n");
-    for (int i = 0; i < user_count; i++) {
-        printf("%s\t%s\t%s\t%d\n", users[i].name, users[i].account_type, users[i].password, users[i].enabled);
-    }
-
-    // Free the XML tree
-    mxmlDelete(tree);
-}
-
-void test_user() {
-    const char *xml_data = "<users>"
-                           "<user>"
-                           "<name>gigalane</name>"
-                           "<account-type>PASSWORD</account-type>"
-                           "<password>gigalane1234</password>"
-                           "<enabled>true</enabled>"
-                           "</user>"
-                           "<user>"
-                           "<name>admin</name>"
-                           "<account-type>PASSWORD</account-type>"
-                           "<password>admin1234</password>"
-                           "<enabled>true</enabled>"
-                           "</user>"
-                           "</users>";
-
-    create_user_account_table(xml_data);
 }
