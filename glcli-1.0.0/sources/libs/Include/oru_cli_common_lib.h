@@ -36,4 +36,6 @@ int show_sysrepoctl_user_accout(struct cli *cli);
 void show_vlan_mplane_info(struct cli *cli);
 void show_iface_mplane_info(struct cli *cli);
 
+void test_user(void);
+
 #endif // ORU_CLI_COMMON_LIB_H

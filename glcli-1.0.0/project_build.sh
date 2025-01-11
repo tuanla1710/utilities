@@ -32,6 +32,29 @@ function help() {
     echo -e "${YELLOW}#============================[USAGE]===========================#${RES}"
 }
 
+
+# Function to set host compiler environment variables
+set_host_compiler_env() {
+    export CC=gcc
+    export CXX=g++
+    export AR=ar
+    export AS=as
+    export LD=ld
+    export RANLIB=ranlib
+    export STRIP=strip
+}
+
+# Function to set cross compiler environment variables
+set_cross_compiler_env() {
+    export CC=riscv32-poky-linux-gcc
+    export CXX=riscv32-poky-linux-g++
+    export AR=riscv32-poky-linux-ar
+    export AS=riscv32-poky-linux-as
+    export LD=riscv32-poky-linux-ld
+    export RANLIB=riscv32-poky-linux-ranlib
+    export STRIP=riscv32-poky-linux-strip
+}
+
 function project_init() {
     cd "${ROOT_PATH}"
     [[ -d "${OUTPUT_PATH}" ]] && rm -rf "${OUTPUT_PATH}"
